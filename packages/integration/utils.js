@@ -1,5 +1,6 @@
 const childProcess = require("child_process");
 const path = require("path");
+const execa = require("execa");
 
 function snapshotizeOutput(ret) {
   const escapedPath = path
@@ -63,11 +64,8 @@ function snapshotizeCSS(ret) {
   return ret.replace(/url\((?:'|")?(.*)\?(.*)\)/g, "url($1?CACHEBUST)"); // Cache busting
 }
 
-function run(args, commandOptions) {
+async function run(args, commandOptions) {
   const options = Object.assign(
-    {
-      shell: true
-    },
     commandOptions || {}
   );
 
@@ -77,18 +75,22 @@ function run(args, commandOptions) {
     options.env || {}
   );
 
-  const ret = childProcess.spawnSync(
-    `'${require.resolve("@swissquote/crafty/src/bin")}'`,
-    args,
-    options
-  );
+  let ret;
+  try {
+    ret = await execa.node(
+      require.resolve("@swissquote/crafty/src/bin"),
+      args,
+      options
+    );
+  } catch (e) {
+    ret = e;
+  }
 
   return {
-    stdout: ret.stdout
-      ? `\n${snapshotizeOutput(ret.stdout.toString("utf8"))}`
+    stdall: ret.all
+      ? `\n${snapshotizeOutput(ret.all.toString("utf8"))}`
       : "",
-    stderr: ret.stderr ? snapshotizeOutput(ret.stderr.toString("utf8")) : "",
-    status: ret.status
+    status: ret.exitCode
   };
 }
 

@@ -3,8 +3,7 @@
 exports[`Deletes rollup uglify plugin using crafty.config.js 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/compiles-no-uglify/dist/js
@@ -13,8 +12,7 @@ Object {
 [__:__:__] Starting 'js_myTSBundle' ...
 [__:__:__] Finished 'js_myTSBundle' after ____ ms
 [__:__:__] Finished 'js' after ____ ms
-[__:__:__] Finished 'default' after ____ ms
-",
+[__:__:__] Finished 'default' after ____ ms",
 }
 `;
 
@@ -50,15 +48,7 @@ export { C, D };
 exports[`Fails gracefully on broken markup 1`] = `
 Object {
   "status": 1,
-  "stderr": "[js_myTSBundle] (!) Errors were found
-js/typescript.ts
-[__:__:__] 'js_myTSBundle' errored after ____ ms
-[__:__:__] Error: Errors were found
-    ...stacktrace...
-[__:__:__] 'js' errored after ____ ms
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/fails/dist/js
@@ -71,22 +61,20 @@ __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/fails/js/
 
 ✖ 1 problem (1 error, 0 warnings)
 
-",
+[js_myTSBundle] (!) Errors were found
+js/typescript.ts
+[__:__:__] 'js_myTSBundle' errored after ____ ms
+[__:__:__] Error: Errors were found
+    ...stacktrace...
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms",
 }
 `;
 
 exports[`Lints TypeScript with rollup 1`] = `
 Object {
   "status": 1,
-  "stderr": "[js_myBundle] (!) Errors were found
-js/script.ts
-[__:__:__] 'js_myBundle' errored after ____ ms
-[__:__:__] Error: Errors were found
-    ...stacktrace...
-[__:__:__] 'js' errored after ____ ms
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/lints/dist/js
@@ -108,15 +96,20 @@ __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/lints/js/
 ✖ 9 problems (6 errors, 3 warnings)
   6 errors and 0 warnings potentially fixable with the \`--fix\` option.
 
-",
+[js_myBundle] (!) Errors were found
+js/script.ts
+[__:__:__] 'js_myBundle' errored after ____ ms
+[__:__:__] Error: Errors were found
+    ...stacktrace...
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms",
 }
 `;
 
 exports[`Works with rollup 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-rollup/compiles/dist/js
@@ -125,8 +118,7 @@ Object {
 [__:__:__] Starting 'js_myTSBundle' ...
 [__:__:__] Finished 'js_myTSBundle' after ____ ms
 [__:__:__] Finished 'js' after ____ ms
-[__:__:__] Finished 'default' after ____ ms
-",
+[__:__:__] Finished 'default' after ____ ms",
 }
 `;
 

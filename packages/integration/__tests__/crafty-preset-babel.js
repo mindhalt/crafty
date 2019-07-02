@@ -162,11 +162,11 @@ it("Assigns bundle only once when runner is specified", () => {
   ]);
 });
 
-it("Lints JavaScript using command", () => {
+it("Lints JavaScript using command", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
   rimraf.sync("dist");
 
-  const result = testUtils.run(["jsLint", "js/**/*.js"]);
+  const result = await testUtils.run(["jsLint", "js/**/*.js"]);
 
   expect(result).toMatchSnapshot();
 
@@ -175,13 +175,13 @@ it("Lints JavaScript using command", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Generates IDE Helper", () => {
+it("Generates IDE Helper", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/ide"));
   rimraf.sync(".eslintrc.js");
   rimraf.sync("prettier.config.js");
   rimraf.sync(".gitignore");
 
-  const result = testUtils.run(["ide"]);
+  const result = await testUtils.run(["ide"]);
 
   expect(result).toMatchSnapshot();
 
@@ -202,13 +202,13 @@ it("Generates IDE Helper", () => {
   ).toMatchSnapshot();
 });
 
-it("Lints JavaScript using command, ignore crafty.config.js", () => {
+it("Lints JavaScript using command, ignore crafty.config.js", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel/lints-ignore-config")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run([
+  const result = await testUtils.run([
     "--preset",
     PRESET_BABEL,
     "--ignore-crafty-config",
@@ -223,13 +223,13 @@ it("Lints JavaScript using command, ignore crafty.config.js", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints JavaScript using command, legacy", () => {
+it("Lints JavaScript using command, legacy", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel/lints-es5")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["jsLint", "js/**/*.js", "--preset", "legacy"]);
+  const result = await testUtils.run(["jsLint", "js/**/*.js", "--preset", "legacy"]);
 
   expect(result).toMatchSnapshot();
 
@@ -238,11 +238,11 @@ it("Lints JavaScript using command, legacy", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints JavaScript using command, recommended preset", () => {
+it("Lints JavaScript using command, recommended preset", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
   rimraf.sync("dist");
 
-  const result = testUtils.run([
+  const result = await testUtils.run([
     "jsLint",
     "js/**/*.js",
     "--preset",
@@ -256,11 +256,11 @@ it("Lints JavaScript using command, recommended preset", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints JavaScript using command, explicit configuration", () => {
+it("Lints JavaScript using command, explicit configuration", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
   rimraf.sync("dist");
 
-  const result = testUtils.run([
+  const result = await testUtils.run([
     "jsLint",
     "js/**/*.js",
     "--config",

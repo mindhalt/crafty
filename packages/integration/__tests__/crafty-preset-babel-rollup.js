@@ -7,13 +7,13 @@ const rimraf = require("rimraf");
 
 const testUtils = require("../utils");
 
-it("Compiles JavaScript with rollup", () => {
+it("Compiles JavaScript with rollup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -25,13 +25,13 @@ it("Compiles JavaScript with rollup", () => {
   ).toMatchSnapshot();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -39,13 +39,13 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints JavaScript with rollup", () => {
+it("Lints JavaScript with rollup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/lints")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

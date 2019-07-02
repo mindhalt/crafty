@@ -43,13 +43,13 @@ it("Loads crafty-preset-typescript, crafty-runner-gulp and registers gulp task",
   ]);
 });
 
-it("Compiles TypeScript", () => {
+it("Compiles TypeScript", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-gulp/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -70,7 +70,7 @@ it("Compiles TypeScript", () => {
   ).toMatchSnapshot();
 });
 
-it("Compiles TypeScript and concatenates", () => {
+it("Compiles TypeScript and concatenates", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -79,7 +79,7 @@ it("Compiles TypeScript and concatenates", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -97,13 +97,13 @@ it("Compiles TypeScript and concatenates", () => {
   ).toMatchSnapshot();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-gulp/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -112,13 +112,13 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints TypeScript", () => {
+it("Lints TypeScript", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-gulp/lints")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

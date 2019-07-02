@@ -3,12 +3,10 @@
 exports[`Creates IDE Integration files 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 Written jest.config.js
-Written .gitignore
-",
+Written .gitignore",
 }
 `;
 
@@ -53,12 +51,10 @@ exports[`Creates IDE Integration files 3`] = `
 exports[`Creates IDE Integration files with Babel 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 Written jest.config.js
-Written .gitignore
-",
+Written .gitignore",
 }
 `;
 
@@ -98,25 +94,25 @@ module.exports = {
 exports[`Succeeds with babel 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/math.js
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/math.js
   ✓ adds two numbers (__ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;
 
 exports[`Succeeds with babel and React 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/MyComponent.jsx
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/MyComponent.jsx
   <MyComponent />
     ✓ renders three <Foo /> components (__ms)
     ✓ renders an \`.icon-star\` (__ms)
@@ -128,82 +124,70 @@ Test Suites: 1 passed, 1 total
 Tests:       4 passed, 4 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;
 
 exports[`Succeeds with esm module 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/math.js
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/math.js
   ✓ adds two numbers (__ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;
 
 exports[`Succeeds with esm module and babel 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/math.js
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/math.js
   ✓ adds two numbers (__ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;
 
 exports[`Succeeds with typescript 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/math.ts
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/math.ts
   ✓ adds two numbers (__ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;
 
 exports[`Succeeds without transpiling 1`] = `
 Object {
   "status": 0,
-  "stderr": "PASS src/__tests__/math.js
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+PASS src/__tests__/math.js
   ✓ adds two numbers (__ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        _____s
-Ran all test suites.
-",
-  "stdout": "
-[__:__:__] Starting Crafty __version__...
-",
+Ran all test suites.",
 }
 `;

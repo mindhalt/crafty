@@ -3,8 +3,7 @@
 exports[`Copies and compresses images 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             img: __PATH__/packages/integration/fixtures/crafty-preset-images/dist/images
@@ -14,7 +13,6 @@ Object {
 [__:__:__] Finished 'images_all' after ____ ms
 [__:__:__] Starting 'images_svg' ...
 [__:__:__] Finished 'images_svg' after ____ ms
-[__:__:__] Finished 'images' after ____ ms
-",
+[__:__:__] Finished 'images' after ____ ms",
 }
 `;

@@ -51,13 +51,13 @@ it("Loads crafty-preset-babel, crafty-runner-gulp and registers gulp task", () =
   ]);
 });
 
-it("Compiles JavaScript", () => {
+it("Compiles JavaScript", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -78,13 +78,13 @@ it("Compiles JavaScript", () => {
   ).toMatchSnapshot();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -92,7 +92,7 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Compiles JavaScript with custom babel plugin", () => {
+it("Compiles JavaScript with custom babel plugin", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -101,7 +101,7 @@ it("Compiles JavaScript with custom babel plugin", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -116,13 +116,13 @@ it("Compiles JavaScript with custom babel plugin", () => {
   ).toMatchSnapshot();
 });
 
-it("Compiles JavaScript and concatenates", () => {
+it("Compiles JavaScript and concatenates", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/concatenates")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -140,13 +140,13 @@ it("Compiles JavaScript and concatenates", () => {
   ).toMatchSnapshot();
 });
 
-it("Lints JavaScript", () => {
+it("Lints JavaScript", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/lints-es5")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -155,13 +155,13 @@ it("Lints JavaScript", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints JavaScript, doesn't fail in development", () => {
+it("Lints JavaScript, doesn't fail in development", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/lints-es5-dev")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

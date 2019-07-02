@@ -34,52 +34,52 @@ it("Loads crafty-preset-postcss, crafty-runner-gulp and registers gulp task", ()
   ]);
 });
 
-it("Doesn't compile without a task, but lints", () => {
+it("Doesn't compile without a task, but lints", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/no-bundle")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Doesn't compile without a task, but lints (doesn't throw in development)", () => {
+it("Doesn't compile without a task, but lints (doesn't throw in development)", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/no-bundle-dev")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Experiment with all CSS", () => {
+it("Experiment with all CSS", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/experiment")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -93,13 +93,13 @@ it("Experiment with all CSS", () => {
   ).toMatchSnapshot();
 });
 
-it("Compiles CSS", () => {
+it("Compiles CSS", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -112,7 +112,7 @@ it("Compiles CSS", () => {
   );
 });
 
-it("Compiles CSS, configuration has overrides", () => {
+it("Compiles CSS, configuration has overrides", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -121,7 +121,7 @@ it("Compiles CSS, configuration has overrides", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

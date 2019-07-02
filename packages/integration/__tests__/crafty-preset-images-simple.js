@@ -66,13 +66,13 @@ it("Loads crafty-preset-images-simple, crafty-runner-gulp and registers gulp tas
   ]);
 });
 
-it("Copies and compresses images", () => {
+it("Copies and compresses images", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-images-simple")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "images"]);
+  const result = await testUtils.run(["run", "images"]);
 
   expect(result).toMatchSnapshot();
 

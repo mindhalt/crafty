@@ -7,13 +7,13 @@ const rimraf = require("rimraf");
 
 const testUtils = require("../utils");
 
-it("Lints TypeScript using the command", () => {
+it("Lints TypeScript using the command", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript/lints")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["jsLint", "js/**/*.ts"]);
+  const result = await testUtils.run(["jsLint", "js/**/*.ts"]);
 
   expect(result).toMatchSnapshot();
 

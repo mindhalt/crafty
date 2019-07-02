@@ -7,13 +7,13 @@ const rimraf = require("rimraf");
 
 const testUtils = require("../utils");
 
-it("Compiles CSS within webpack", () => {
+it("Compiles CSS within webpack", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-webpack/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -25,13 +25,13 @@ it("Compiles CSS within webpack", () => {
   ).toMatchSnapshot();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss-webpack/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -39,7 +39,7 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Compiles CSS within webpack, extracts CSS ('extractCSS' boolean option)", () => {
+it("Compiles CSS within webpack, extracts CSS ('extractCSS' boolean option)", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -48,7 +48,7 @@ it("Compiles CSS within webpack, extracts CSS ('extractCSS' boolean option)", ()
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -65,7 +65,7 @@ it("Compiles CSS within webpack, extracts CSS ('extractCSS' boolean option)", ()
   ).toMatchSnapshot();
 });
 
-it("Compiles CSS within webpack, extracts CSS ('extractCSS' string option)", () => {
+it("Compiles CSS within webpack, extracts CSS ('extractCSS' string option)", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -74,7 +74,7 @@ it("Compiles CSS within webpack, extracts CSS ('extractCSS' string option)", () 
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -91,7 +91,7 @@ it("Compiles CSS within webpack, extracts CSS ('extractCSS' string option)", () 
   ).toMatchSnapshot();
 });
 
-it("Compiles CSS within webpack, extracts CSS ('extractCSS' object option)", () => {
+it("Compiles CSS within webpack, extracts CSS ('extractCSS' object option)", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -100,7 +100,7 @@ it("Compiles CSS within webpack, extracts CSS ('extractCSS' object option)", () 
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

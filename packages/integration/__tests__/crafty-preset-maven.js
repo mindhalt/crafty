@@ -33,24 +33,24 @@ it("Loads crafty-preset-maven, crafty-preset-babel and overrides configuration",
   );
 });
 
-it("Fails if no pom is found", () => {
+it("Fails if no pom is found", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-maven/missing-pom")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
 });
 
-it("Places files in target of a webapp", () => {
+it("Places files in target of a webapp", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-maven/webapp"));
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -59,13 +59,13 @@ it("Places files in target of a webapp", () => {
   ).toBeTruthy();
 });
 
-it("Reads env. var before pom.xml", () => {
+it("Reads env. var before pom.xml", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-maven/env-override")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"], {
+  const result = await testUtils.run(["run", "default"], {
     env: { TARGET_BASEDIR: path.join(process.cwd(), "target/some_basedir") }
   });
 
@@ -76,7 +76,7 @@ it("Reads env. var before pom.xml", () => {
   ).toBeTruthy();
 });
 
-it("Places files in target of a webapp from within a subfolder", () => {
+it("Places files in target of a webapp from within a subfolder", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -85,7 +85,7 @@ it("Places files in target of a webapp from within a subfolder", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -96,11 +96,11 @@ it("Places files in target of a webapp from within a subfolder", () => {
   ).toBeTruthy();
 });
 
-it("Places files in target of a webjar", () => {
+it("Places files in target of a webjar", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-maven/webjar"));
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

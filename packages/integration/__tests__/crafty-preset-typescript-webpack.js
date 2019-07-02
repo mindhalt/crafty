@@ -52,7 +52,7 @@ it("Loads crafty-preset-typescript, crafty-runner-webpack and registers webpack 
   ]);
 });
 
-it("Compiles TypeScript", () => {
+it("Compiles TypeScript", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -61,7 +61,7 @@ it("Compiles TypeScript", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -81,7 +81,7 @@ it("Compiles TypeScript", () => {
   ).toMatchSnapshot();
 });
 
-it("Compiles TypeScript - fork checker", () => {
+it("Compiles TypeScript - fork checker", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -90,7 +90,7 @@ it("Compiles TypeScript - fork checker", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -107,13 +107,13 @@ it("Compiles TypeScript - fork checker", () => {
   ).toMatchSnapshot();
 });
 
-it("Lints TypeScript with webpack", () => {
+it("Lints TypeScript with webpack", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/lints")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -122,13 +122,13 @@ it("Lints TypeScript with webpack", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -137,13 +137,13 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
-it("Fails gracefully on invalid TS", () => {
+it("Fails gracefully on invalid TS", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/invalid")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -152,7 +152,7 @@ it("Fails gracefully on invalid TS", () => {
   expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
-it("Fails gracefully on invalid TS - fork checker", () => {
+it("Fails gracefully on invalid TS - fork checker", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -161,7 +161,7 @@ it("Fails gracefully on invalid TS - fork checker", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -171,7 +171,7 @@ it("Fails gracefully on invalid TS - fork checker", () => {
   //expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
-it("Removes unused classes", () => {
+it("Removes unused classes", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -180,7 +180,7 @@ it("Removes unused classes", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

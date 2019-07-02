@@ -26,39 +26,39 @@ it("Loads crafty-preset-postcss and does not register gulp tasks", () => {
   expect(Object.keys(crafty.undertaker._registry.tasks())).toEqual([]);
 });
 
-it("Lints with the command", () => {
+it("Lints with the command", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["cssLint", "css/*.scss"]);
+  const result = await testUtils.run(["cssLint", "css/*.scss"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Lints with the command in legacy mode", () => {
+it("Lints with the command in legacy mode", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["cssLint", "css/*.scss", "--preset", "legacy"]);
+  const result = await testUtils.run(["cssLint", "css/*.scss", "--preset", "legacy"]);
 
   expect(result).toMatchSnapshot();
 
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Lints with the command with custom config", () => {
+it("Lints with the command with custom config", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run([
+  const result = await testUtils.run([
     "cssLint",
     "css/*.scss",
     "--config",
@@ -70,13 +70,13 @@ it("Lints with the command with custom config", () => {
   expect(fs.existsSync("dist")).toBeFalsy();
 });
 
-it("Creates IDE Integration files", () => {
+it("Creates IDE Integration files", async () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-postcss/ide"));
   rimraf.sync("stylelint.config.js");
   rimraf.sync("prettier.config.js");
   rimraf.sync(".gitignore");
 
-  const result = testUtils.run(["ide"]);
+  const result = await testUtils.run(["ide"]);
 
   expect(result).toMatchSnapshot();
   expect(

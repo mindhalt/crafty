@@ -3,13 +3,11 @@
 exports[`Generates IDE Helper 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 Written prettier.config.js
 Written .eslintrc.js
-Written .gitignore
-",
+Written .gitignore",
 }
 `;
 
@@ -56,8 +54,7 @@ exports[`Generates IDE Helper 4`] = `
 exports[`Lints JavaScript using command 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/Component.js
@@ -80,7 +77,6 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/script.js
 
 ✖ 14 problems (12 errors, 2 warnings)
   10 errors and 0 warnings potentially fixable with the \`--fix\` option.
-
 ",
 }
 `;
@@ -88,8 +84,7 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/script.js
 exports[`Lints JavaScript using command, explicit configuration 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/Component.js
@@ -112,7 +107,6 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/script.js
 
 ✖ 14 problems (12 errors, 2 warnings)
   10 errors and 0 warnings potentially fixable with the \`--fix\` option.
-
 ",
 }
 `;
@@ -120,15 +114,13 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/script.js
 exports[`Lints JavaScript using command, ignore crafty.config.js 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel/lints-ignore-config/crafty.config.js
   1:1  error  'module' is not defined  no-undef
 
 ✖ 1 problem (1 error, 0 warnings)
-
 ",
 }
 `;
@@ -136,8 +128,7 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints-ignore-config/c
 exports[`Lints JavaScript using command, legacy 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel/lints-es5/js/script.js
@@ -150,7 +141,6 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints-es5/js/script.j
 
 ✖ 6 problems (6 errors, 0 warnings)
   3 errors and 0 warnings potentially fixable with the \`--fix\` option.
-
 ",
 }
 `;
@@ -158,8 +148,7 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints-es5/js/script.j
 exports[`Lints JavaScript using command, recommended preset 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/Component.js
@@ -182,7 +171,6 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel/lints/js/script.js
 
 ✖ 14 problems (12 errors, 2 warnings)
   10 errors and 0 warnings potentially fixable with the \`--fix\` option.
-
 ",
 }
 `;

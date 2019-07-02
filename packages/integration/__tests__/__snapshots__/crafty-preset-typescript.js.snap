@@ -3,8 +3,7 @@
 exports[`Lints TypeScript using the command 1`] = `
 Object {
   "status": 1,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 
 __PATH__/packages/integration/fixtures/crafty-preset-typescript/lints/js/Component.ts
@@ -37,7 +36,6 @@ __PATH__/packages/integration/fixtures/crafty-preset-typescript/lints/js/script.
 
 ✖ 22 problems (19 errors, 3 warnings)
   18 errors and 0 warnings potentially fixable with the \`--fix\` option.
-
 ",
 }
 `;

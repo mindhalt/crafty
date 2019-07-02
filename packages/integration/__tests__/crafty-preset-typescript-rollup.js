@@ -13,13 +13,13 @@ const testUtils = require("../utils");
 // https://github.com/jfromaniello/selfsigned/issues/16
 jest.mock("node-forge");
 
-it("Works with rollup", () => {
+it("Works with rollup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-rollup/compiles")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -30,7 +30,7 @@ it("Works with rollup", () => {
   ).toMatchSnapshot();
 });
 
-it("Deletes rollup uglify plugin using crafty.config.js", () => {
+it("Deletes rollup uglify plugin using crafty.config.js", async () => {
   process.chdir(
     path.join(
       __dirname,
@@ -39,7 +39,7 @@ it("Deletes rollup uglify plugin using crafty.config.js", () => {
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -50,13 +50,13 @@ it("Deletes rollup uglify plugin using crafty.config.js", () => {
   ).toMatchSnapshot();
 });
 
-it("Fails gracefully on broken markup", () => {
+it("Fails gracefully on broken markup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-rollup/fails")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
@@ -65,13 +65,13 @@ it("Fails gracefully on broken markup", () => {
   expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
-it("Lints TypeScript with rollup", () => {
+it("Lints TypeScript with rollup", async () => {
   process.chdir(
     path.join(__dirname, "../fixtures/crafty-preset-typescript-rollup/lints")
   );
   rimraf.sync("dist");
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"]);
 
   expect(result).toMatchSnapshot();
 

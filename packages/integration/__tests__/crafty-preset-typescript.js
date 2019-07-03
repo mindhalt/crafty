@@ -1,23 +1,23 @@
 /* global describe, it, expect */
 
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
+const { run, cleanDist, exists } = require("../utils");
 
-const testUtils = require("../utils");
+jest.setTimeout(10000);
 
 it("Lints TypeScript using the command", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-typescript/lints")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript/lints"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["jsLint", "js/**/*.ts"]);
+  const result = await run(dir, ["jsLint", "js/**/*.ts"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });

@@ -1,12 +1,10 @@
 /* global describe, it, expect, jest */
 
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
 const configuration = require("@swissquote/crafty/src/configuration");
 
-const testUtils = require("../utils");
+const { run, cleanDist, exists, readFile } = require("../utils");
 
 const getCrafty = configuration.getCrafty;
 
@@ -15,6 +13,8 @@ const getCrafty = configuration.getCrafty;
 // as we don't use it for now, we can simply mock it
 // https://github.com/jfromaniello/selfsigned/issues/16
 jest.mock("node-forge");
+
+jest.setTimeout(10000);
 
 it("Loads crafty-preset-typescript and does not register webpack tasks", () => {
   const crafty = getCrafty(["@swissquote/crafty-preset-typescript"], {});
@@ -53,141 +53,126 @@ it("Loads crafty-preset-typescript, crafty-runner-webpack and registers webpack 
 });
 
 it("Compiles TypeScript", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-typescript-webpack/compiles"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/compiles"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeTruthy();
-  expect(fs.existsSync("dist/js/1.myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/1.myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/1.myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/1.myBundle.min.js.map")).toBeTruthy();
 
-  expect(
-    fs.readFileSync("dist/js/myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
-  expect(
-    fs.readFileSync("dist/js/1.myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
-  expect(
-    fs.readFileSync("dist/js/js/SomeLibrary.d.ts").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/myBundle.min.js")).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/1.myBundle.min.js")).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/js/SomeLibrary.d.ts")).toMatchSnapshot();
 });
 
 it("Compiles TypeScript - fork checker", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-typescript-webpack/compiles-forked"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/compiles-forked"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeTruthy();
-  expect(fs.existsSync("dist/js/1.myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/1.myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/1.myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/1.myBundle.min.js.map")).toBeTruthy();
 
-  expect(
-    fs.readFileSync("dist/js/myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
-  expect(
-    fs.readFileSync("dist/js/1.myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/myBundle.min.js")).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/1.myBundle.min.js")).toMatchSnapshot();
 });
 
 it("Lints TypeScript with webpack", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/lints")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/lints"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Fails gracefully on broken markup", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/fails")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/fails"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myTSBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myTSBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
 it("Fails gracefully on invalid TS", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-typescript-webpack/invalid")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/invalid"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed types
-  expect(fs.existsSync("dist/js/myTSBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myTSBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
 it("Fails gracefully on invalid TS - fork checker", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-typescript-webpack/invalid-forked"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/invalid-forked"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed types
   // TODO :: see if it can be done with fork TS Checker
-  //expect(fs.existsSync("dist/js/myTSBundle.min.js")).toBeFalsy();
-  //expect(fs.existsSync("dist/js/myTSBundle.min.js.map")).toBeFalsy();
+  //expect(exists(dir, "dist/js/myTSBundle.min.js")).toBeFalsy();
+  //expect(exists(dir, "dist/js/myTSBundle.min.js.map")).toBeFalsy();
 });
 
 it("Removes unused classes", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-typescript-webpack/tree-shaking"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-typescript-webpack/tree-shaking"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeTruthy();
 
-  const content = fs.readFileSync("dist/js/myBundle.min.js").toString("utf8");
+  const content = readFile(dir, "dist/js/myBundle.min.js");
 
   expect(content.indexOf("From class A") > -1).toBeTruthy();
   expect(content.indexOf("From class B") > -1).toBeFalsy();

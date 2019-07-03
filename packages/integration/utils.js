@@ -1,6 +1,7 @@
-const childProcess = require("child_process");
+const fs = require("fs");
 const path = require("path");
 const execa = require("execa");
+const rmfr = require("rmfr");
 
 function snapshotizeOutput(ret) {
   const escapedPath = path
@@ -64,10 +65,8 @@ function snapshotizeCSS(ret) {
   return ret.replace(/url\((?:'|")?(.*)\?(.*)\)/g, "url($1?CACHEBUST)"); // Cache busting
 }
 
-async function run(args, commandOptions) {
-  const options = Object.assign(
-    commandOptions || {}
-  );
+async function run(dir, args, commandOptions) {
+  const options = Object.assign({ cwd: dir }, commandOptions || {});
 
   options.env = Object.assign(
     { TESTING_CRAFTY: "true" },
@@ -87,15 +86,36 @@ async function run(args, commandOptions) {
   }
 
   return {
-    stdall: ret.all
-      ? `\n${snapshotizeOutput(ret.all.toString("utf8"))}`
-      : "",
+    stdall: ret.all ? `\n${snapshotizeOutput(ret.all.toString("utf8"))}` : "",
     status: ret.exitCode
   };
 }
 
+function cleanDist(dir, others) {
+  const all = [rmfr(path.join(dir, "dist"))];
+
+  if (others) {
+    others.forEach(item => {
+      all.push(rmfr(path.join(dir, item)));
+    });
+  }
+
+  return Promise.all(all);
+}
+
+function exists(dir, file) {
+  return fs.existsSync(path.join(dir, file));
+}
+
+function readFile(dir, file) {
+  return fs.readFileSync(path.join(dir, file)).toString("utf8");
+}
+
 module.exports = {
   run,
+  cleanDist,
+  exists,
+  readFile,
   snapshotizeCSS,
   snapshotizeOutput
 };

@@ -3,12 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
 const configuration = require("@swissquote/crafty/src/configuration");
 
-const testUtils = require("../utils");
+const { run, cleanDist, exists } = require("../utils");
 
 const getCrafty = configuration.getCrafty;
+
+jest.setTimeout(10000);
 
 it("Loads crafty-preset-maven, crafty-preset-babel and overrides configuration", () => {
   process.chdir(path.join(__dirname, "../fixtures/crafty-preset-maven/webapp"));
@@ -34,78 +35,78 @@ it("Loads crafty-preset-maven, crafty-preset-babel and overrides configuration",
 });
 
 it("Fails if no pom is found", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-maven/missing-pom")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-maven/missing-pom"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
 });
 
 it("Places files in target of a webapp", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-maven/webapp"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-maven/webapp");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(
-    fs.existsSync("target/my-app-1.0.0-SNAPSHOT/resources/js/myBundle.min.js")
+    exists(dir, "target/my-app-1.0.0-SNAPSHOT/resources/js/myBundle.min.js")
   ).toBeTruthy();
 });
 
 it("Reads env. var before pom.xml", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-maven/env-override")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-maven/env-override"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"], {
-    env: { TARGET_BASEDIR: path.join(process.cwd(), "target/some_basedir") }
+  const result = await run(dir, ["run", "default"], {
+    env: { TARGET_BASEDIR: path.join(dir, "target/some_basedir") }
   });
 
   expect(result).toMatchSnapshot();
 
   expect(
-    fs.existsSync("target/some_basedir/resources/js/myBundle.min.js")
+    exists(dir, "target/some_basedir/resources/js/myBundle.min.js")
   ).toBeTruthy();
 });
 
 it("Places files in target of a webapp from within a subfolder", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-maven/subfolder/src/main/frontend"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-maven/subfolder/src/main/frontend"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(
-    fs.existsSync(
+    exists(dir,
       "../../../target/my-app-1.0.0-SNAPSHOT/resources/js/myBundle.min.js"
     )
   ).toBeTruthy();
 });
 
 it("Places files in target of a webjar", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-maven/webjar"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-maven/webjar");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   expect(
-    fs.existsSync(
+   exists(dir,
       "target/classes/META-INF/resources/webjars/js/myBundle.min.js"
     )
   ).toBeTruthy();

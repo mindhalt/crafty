@@ -1,15 +1,21 @@
 /* global describe, it, expect */
 
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
 const configuration = require("@swissquote/crafty/src/configuration");
 const getCommands = require("@swissquote/crafty/src/commands/index");
 
-const testUtils = require("../utils");
+const {
+  run,
+  cleanDist,
+  exists,
+  readFile,
+  snapshotizeOutput
+} = require("../utils");
 
 const getCrafty = configuration.getCrafty;
+
+jest.setTimeout(10000);
 
 it("Loads crafty-preset-postcss and does not register gulp tasks", () => {
   const crafty = getCrafty(["@swissquote/crafty-preset-postcss"], {});
@@ -27,38 +33,46 @@ it("Loads crafty-preset-postcss and does not register gulp tasks", () => {
 });
 
 it("Lints with the command", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss/no-bundle"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["cssLint", "css/*.scss"]);
+  const result = await run(dir, ["cssLint", "css/*.scss"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(exists(dir, "dist")).toBeFalsy();
 });
 
 it("Lints with the command in legacy mode", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss/no-bundle"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["cssLint", "css/*.scss", "--preset", "legacy"]);
+  const result = await run(dir, [
+    "cssLint",
+    "css/*.scss",
+    "--preset",
+    "legacy"
+  ]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(exists(dir, "dist")).toBeFalsy();
 });
 
 it("Lints with the command with custom config", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss/no-bundle")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss/no-bundle"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run([
+  const result = await run(dir, [
     "cssLint",
     "css/*.scss",
     "--config",
@@ -67,31 +81,23 @@ it("Lints with the command with custom config", async () => {
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(exists(dir, "dist")).toBeFalsy();
 });
 
 it("Creates IDE Integration files", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-postcss/ide"));
-  rimraf.sync("stylelint.config.js");
-  rimraf.sync("prettier.config.js");
-  rimraf.sync(".gitignore");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-postcss/ide");
+  await cleanDist(dir, ["stylelint.config.js", "prettier.config.js", ".gitignore"]);
 
-  const result = await testUtils.run(["ide"]);
+  const result = await run(dir, ["ide"]);
 
   expect(result).toMatchSnapshot();
   expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync("stylelint.config.js").toString("utf8")
-    )
+    snapshotizeOutput(readFile(dir, "stylelint.config.js"))
   ).toMatchSnapshot();
 
   expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync("prettier.config.js").toString("utf8")
-    )
+    snapshotizeOutput(readFile(dir, "prettier.config.js"))
   ).toMatchSnapshot();
 
-  expect(
-    testUtils.snapshotizeOutput(fs.readFileSync(".gitignore").toString("utf8"))
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, ".gitignore"))).toMatchSnapshot();
 });

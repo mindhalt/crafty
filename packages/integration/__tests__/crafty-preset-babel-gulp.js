@@ -1,16 +1,15 @@
 /* global describe, it, expect */
 
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
 const configuration = require("@swissquote/crafty/src/configuration");
 const getCommands = require("@swissquote/crafty/src/commands/index");
 
-const testUtils = require("../utils");
+const { run, cleanDist, exists, readFile } = require("../utils");
+
+jest.setTimeout(10000);
 
 const getCrafty = configuration.getCrafty;
-
 it("Loads crafty-preset-babel and does not register gulp tasks", () => {
   const crafty = getCrafty(["@swissquote/crafty-preset-babel"], {});
 
@@ -52,120 +51,116 @@ it("Loads crafty-preset-babel, crafty-runner-gulp and registers gulp task", () =
 });
 
 it("Compiles JavaScript", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/compiles")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/compiles"
   );
-  rimraf.sync("dist");
 
-  const result = await testUtils.run(["run", "default"]);
+  await cleanDist(dir);
+
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 
-  expect(fs.existsSync("dist/js/script.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/script.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/script.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/script.js.map")).toBeTruthy();
 
-  expect(fs.existsSync("dist/js/otherfile.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/otherfile.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/otherfile.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/otherfile.js.map")).toBeTruthy();
 
-  expect(
-    fs.readFileSync("dist/js/script.js").toString("utf8")
-  ).toMatchSnapshot();
-  expect(
-    fs.readFileSync("dist/js/otherfile.js").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/script.js")).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/otherfile.js")).toMatchSnapshot();
 });
 
 it("Fails gracefully on broken markup", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/fails")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/fails"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Compiles JavaScript with custom babel plugin", async () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-babel-gulp/compiles-babel-plugin"
-    )
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/compiles-babel-plugin"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 
-  expect(fs.existsSync("dist/js/script.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/script.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/script.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/script.js.map")).toBeTruthy();
 
-  expect(
-    fs.readFileSync("dist/js/script.js").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/script.js")).toMatchSnapshot();
 });
 
 it("Compiles JavaScript and concatenates", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/concatenates")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/concatenates"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeTruthy();
 
-  expect(fs.existsSync("dist/js/script.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/script.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/script.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/script.js.map")).toBeFalsy();
 
-  expect(fs.existsSync("dist/js/otherfile.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/otherfile.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/otherfile.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/otherfile.js.map")).toBeFalsy();
 
-  expect(
-    fs.readFileSync("dist/js/myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/myBundle.min.js")).toMatchSnapshot();
 });
 
 it("Lints JavaScript", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/lints-es5")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/lints-es5"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Lints JavaScript, doesn't fail in development", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-gulp/lints-es5-dev")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-gulp/lints-es5-dev"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });

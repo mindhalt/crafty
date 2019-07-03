@@ -1,55 +1,54 @@
 /* global describe, it, expect */
-
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
+const { run, cleanDist, exists, readFile } = require("../utils");
 
-const testUtils = require("../utils");
+jest.setTimeout(10000);
 
 it("Compiles JavaScript with rollup", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/compiles")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-rollup/compiles"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeTruthy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeTruthy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeTruthy();
 
-  expect(
-    fs.readFileSync("dist/js/myBundle.min.js").toString("utf8")
-  ).toMatchSnapshot();
+  expect(readFile(dir, "dist/js/myBundle.min.js")).toMatchSnapshot();
 });
 
 it("Fails gracefully on broken markup", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/fails")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-rollup/fails"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Lints JavaScript with rollup", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel-rollup/lints")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel-rollup/lints"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["run", "default"]);
+  const result = await run(dir, ["run", "default"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });

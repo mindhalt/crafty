@@ -3,9 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
-
-const testUtils = require("../utils");
+const { run, cleanDist, readFile, snapshotizeOutput } = require("../utils");
 
 let testIfNotPnp = it;
 
@@ -16,100 +14,83 @@ try {
   // not in PnP; not a problem
 }
 
-it("Succeeds without transpiling", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-jest/succeeds")
-  );
-  rimraf.sync("dist");
+jest.setTimeout(10000);
 
-  const result = await testUtils.run(["test"]);
+it("Succeeds without transpiling", async () => {
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/succeeds");
+  await cleanDist(dir);
+
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });
 
 it("Creates IDE Integration files", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-jest/ide"));
-  rimraf.sync("jest.config.js");
-  rimraf.sync(".gitignore");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/ide");
+  await cleanDist(dir, ["jest.config.js", ".gitignore"]);
 
-  const result = await testUtils.run(["ide"]);
+  const result = await run(dir, ["ide"]);
 
   expect(result).toMatchSnapshot();
-  expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync("jest.config.js").toString("utf8")
-    )
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, "jest.config.js"))).toMatchSnapshot();
 
-  expect(
-    testUtils.snapshotizeOutput(fs.readFileSync(".gitignore").toString("utf8"))
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, ".gitignore"))).toMatchSnapshot();
 });
 
 it("Creates IDE Integration files with Babel", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-jest/ide-babel")
-  );
-  rimraf.sync("jest.config.js");
-  rimraf.sync(".gitignore");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/ide-babel");
+  await cleanDist(dir, ["jest.config.js", ".gitignore"]);
 
-  const result = await testUtils.run(["ide"]);
+  const result = await run(dir, ["ide"]);
 
   expect(result).toMatchSnapshot();
-  expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync("jest.config.js").toString("utf8")
-    )
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, "jest.config.js"))).toMatchSnapshot();
 });
 
 testIfNotPnp("Succeeds with typescript", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-jest/typescript")
-  );
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/typescript");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["test"]);
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });
 
 it("Succeeds with babel", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-jest/babel"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/babel");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["test"]);
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });
 
 testIfNotPnp("Succeeds with babel and React", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-jest/babel-react")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-jest/babel-react"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["test"]);
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });
 
 it("Succeeds with esm module", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-jest/esm"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/esm");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["test"]);
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });
 
 it("Succeeds with esm module and babel", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-jest/esm-babel")
-  );
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-jest/esm-babel");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["test"]);
+  const result = await run(dir, ["test"]);
 
   expect(result).toMatchSnapshot();
 });

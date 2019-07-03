@@ -1,13 +1,17 @@
 /* global describe, it, expect, jest */
 
-const fs = require("fs");
 const path = require("path");
 
-const rimraf = require("rimraf");
 const configuration = require("@swissquote/crafty/src/configuration");
 const getCommands = require("@swissquote/crafty/src/commands/index");
 
-const testUtils = require("../utils");
+const {
+  run,
+  cleanDist,
+  exists,
+  readFile,
+  snapshotizeOutput
+} = require("../utils");
 
 const getCrafty = configuration.getCrafty;
 
@@ -18,6 +22,8 @@ const getCrafty = configuration.getCrafty;
 jest.mock("node-forge");
 
 const PRESET_BABEL = "@swissquote/crafty-preset-babel";
+
+jest.setTimeout(10000);
 
 it("Loads crafty-preset-babel and does not register webpack tasks", () => {
   const crafty = getCrafty([PRESET_BABEL], {});
@@ -163,52 +169,43 @@ it("Assigns bundle only once when runner is specified", () => {
 });
 
 it("Lints JavaScript using command", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-babel/lints");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["jsLint", "js/**/*.js"]);
+  const result = await run(dir, ["jsLint", "js/**/*.js"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Generates IDE Helper", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/ide"));
-  rimraf.sync(".eslintrc.js");
-  rimraf.sync("prettier.config.js");
-  rimraf.sync(".gitignore");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-babel/ide");
+  await cleanDist(dir, [".eslintrc.js", "prettier.config.js", ".gitignore"]);
 
-  const result = await testUtils.run(["ide"]);
+  const result = await run(dir, ["ide"]);
 
   expect(result).toMatchSnapshot();
 
-  expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync(".eslintrc.js").toString("utf8")
-    )
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, ".eslintrc.js"))).toMatchSnapshot();
 
   expect(
-    testUtils.snapshotizeOutput(
-      fs.readFileSync("prettier.config.js").toString("utf8")
-    )
+    snapshotizeOutput(readFile(dir, "prettier.config.js"))
   ).toMatchSnapshot();
 
-  expect(
-    testUtils.snapshotizeOutput(fs.readFileSync(".gitignore").toString("utf8"))
-  ).toMatchSnapshot();
+  expect(snapshotizeOutput(readFile(dir, ".gitignore"))).toMatchSnapshot();
 });
 
 it("Lints JavaScript using command, ignore crafty.config.js", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel/lints-ignore-config")
+  const dir = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-babel/lints-ignore-config"
   );
-  rimraf.sync("dist");
+  await cleanDist(dir);
 
-  const result = await testUtils.run([
+  const result = await run(dir, [
     "--preset",
     PRESET_BABEL,
     "--ignore-crafty-config",
@@ -219,30 +216,28 @@ it("Lints JavaScript using command, ignore crafty.config.js", async () => {
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Lints JavaScript using command, legacy", async () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-babel/lints-es5")
-  );
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-babel/lints-es5");
+  await cleanDist(dir);
 
-  const result = await testUtils.run(["jsLint", "js/**/*.js", "--preset", "legacy"]);
+  const result = await run(dir, ["jsLint", "js/**/*.js", "--preset", "legacy"]);
 
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Lints JavaScript using command, recommended preset", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-babel/lints");
+  await cleanDist(dir);
 
-  const result = await testUtils.run([
+  const result = await run(dir, [
     "jsLint",
     "js/**/*.js",
     "--preset",
@@ -252,15 +247,15 @@ it("Lints JavaScript using command, recommended preset", async () => {
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });
 
 it("Lints JavaScript using command, explicit configuration", async () => {
-  process.chdir(path.join(__dirname, "../fixtures/crafty-preset-babel/lints"));
-  rimraf.sync("dist");
+  const dir = path.join(__dirname, "../fixtures/crafty-preset-babel/lints");
+  await cleanDist(dir);
 
-  const result = await testUtils.run([
+  const result = await run(dir, [
     "jsLint",
     "js/**/*.js",
     "--config",
@@ -270,6 +265,6 @@ it("Lints JavaScript using command, explicit configuration", async () => {
   expect(result).toMatchSnapshot();
 
   // Files aren't generated on failed lint
-  expect(fs.existsSync("dist/js/myBundle.min.js")).toBeFalsy();
-  expect(fs.existsSync("dist/js/myBundle.min.js.map")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js")).toBeFalsy();
+  expect(exists(dir, "dist/js/myBundle.min.js.map")).toBeFalsy();
 });

@@ -3,8 +3,7 @@
 exports[`Compiles JavaScript with rollup 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-babel-rollup/compiles/dist/js
@@ -19,7 +18,7 @@ Object {
 `;
 
 exports[`Compiles JavaScript with rollup 2`] = `
-"function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError(\\"Cannot call a class as a function\\")}function _defineProperties(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,\\"value\\"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}function _createClass(e,t,n){return t&&_defineProperties(e.prototype,t),n&&_defineProperties(e,n),e}function _inherits(e,t){if(\\"function\\"!=typeof t&&null!==t)throw new TypeError(\\"Super expression must either be null or a function\\");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&_setPrototypeOf(e,t)}function _getPrototypeOf(e){return(_getPrototypeOf=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function _setPrototypeOf(e,t){return(_setPrototypeOf=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function _assertThisInitialized(e){if(void 0===e)throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");return e}function _possibleConstructorReturn(e,t){return!t||\\"object\\"!=typeof t&&\\"function\\"!=typeof t?_assertThisInitialized(e):t}var MyComponent=function(e){function t(){var e,n;_classCallCheck(this,t);for(var o=arguments.length,r=new Array(o),i=0;i<o;i++)r[i]=arguments[i];return(n=_possibleConstructorReturn(this,(e=_getPrototypeOf(t)).call.apply(e,[this].concat(r)))).handleClick=function(){n.setState({hey:!0})},n}return _inherits(t,React.Component),_createClass(t,[{key:\\"render\\",value:function(){return React.createElement(\\"div\\",{onClick:this.handleClick},\\"Hey \\",this.state.hey)}}]),t}(),newStuff=function(){function e(){_classCallCheck(this,e),console.log(\\"init class\\")}return _createClass(e,[{key:\\"method\\",value:function(){console.log(MyComponent)}}]),e}();export default newStuff;
+"function e(e,t){if(!(e instanceof t))throw new TypeError(\\"Cannot call a class as a function\\")}function t(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,\\"value\\"in o&&(o.writable=!0),Object.defineProperty(e,o.key,o)}}function n(e,n,o){return n&&t(e.prototype,n),o&&t(e,o),e}function o(e){return(o=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function r(e,t){return(r=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function i(e,t){return!t||\\"object\\"!=typeof t&&\\"function\\"!=typeof t?function(e){if(void 0===e)throw new ReferenceError(\\"this hasn't been initialised - super() hasn't been called\\");return e}(e):t}var c=function(t){function c(){var t,n;e(this,c);for(var r=arguments.length,u=new Array(r),a=0;a<r;a++)u[a]=arguments[a];return(n=i(this,(t=o(c)).call.apply(t,[this].concat(u)))).handleClick=function(){n.setState({hey:!0})},n}return function(e,t){if(\\"function\\"!=typeof t&&null!==t)throw new TypeError(\\"Super expression must either be null or a function\\");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&r(e,t)}(c,React.Component),n(c,[{key:\\"render\\",value:function(){return React.createElement(\\"div\\",{onClick:this.handleClick},\\"Hey \\",this.state.hey)}}]),c}(),u=function(){function t(){e(this,t),console.log(\\"init class\\")}return n(t,[{key:\\"method\\",value:function(){console.log(c)}}]),t}();export default u;
 //# sourceMappingURL=myBundle.min.js.map
 "
 `;
@@ -27,15 +26,7 @@ exports[`Compiles JavaScript with rollup 2`] = `
 exports[`Fails gracefully on broken markup 1`] = `
 Object {
   "status": 1,
-  "stderr": "[js_myBundle] (!) Errors were found
-js/script.js
-[__:__:__] 'js_myBundle' errored after ____ ms
-[__:__:__] Error: Errors were found
-    ...stacktrace...
-[__:__:__] 'js' errored after ____ ms
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-babel-rollup/fails/dist/js
@@ -53,14 +44,7 @@ __PATH__/packages/integration/fixtures/crafty-preset-babel-rollup/fails/js/scrip
 
 ✖ 1 problem (1 error, 0 warnings)
 
-",
-}
-`;
-
-exports[`Lints JavaScript with rollup 1`] = `
-Object {
-  "status": 1,
-  "stderr": "[js_myBundle] (!) Errors were found
+[js_myBundle] (!) Errors were found
 js/script.js
 [__:__:__] 'js_myBundle' errored after ____ ms
 [__:__:__] Error: Errors were found
@@ -68,7 +52,13 @@ js/script.js
 [__:__:__] 'js' errored after ____ ms
 [__:__:__] 'default' errored after ____ ms
 ",
-  "stdout": "
+}
+`;
+
+exports[`Lints JavaScript with rollup 1`] = `
+Object {
+  "status": 1,
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-babel-rollup/lints/dist/js
@@ -77,21 +67,27 @@ js/script.js
 [__:__:__] Starting 'js_myBundle' ...
 
 __PATH__/packages/integration/fixtures/crafty-preset-babel-rollup/lints/js/script.js
-   3:24  error    Multiple spaces found before '\\"./Component.js\\"'                                no-multi-spaces
-   5:10  error    'test' is defined but never used                                               no-unused-vars
-   5:19  error    A space is required after ','                                                  comma-spacing
-   6:1   error    Expected indentation of 2 spaces but found 3                                   indent
-  11:5   warning  Unexpected console statement                                                   no-console
-  15:5   warning  Unexpected console statement                                                   no-console
-  15:19  error    Multiple spaces found before '\\"some method\\"'                                   no-multi-spaces
-  15:33  error    A space is required after ','                                                  comma-spacing
-  15:33  error    There should be no space before ','                                            comma-spacing
-  19:3   error    Opening curly brace does not appear on the same line as controlling statement  brace-style
-  20:14  error    Expected '===' and instead saw '=='                                            eqeqeq
+   3:23  error    Delete \`·\`                                       @swissquote/swissquote/prettier/prettier
+   5:10  error    'test' is defined but never used                 no-unused-vars
+   5:14  error    Replace \`·(one,\` with \`(one,·\`                   @swissquote/swissquote/prettier/prettier
+   6:1   error    Delete \`·\`                                       @swissquote/swissquote/prettier/prettier
+  11:5   warning  Unexpected console statement                     no-console
+  14:9   error    Delete \`·\`                                       @swissquote/swissquote/prettier/prettier
+  15:5   warning  Unexpected console statement                     no-console
+  15:17  error    Replace \`··\\"some·method\\"·\` with \`\\"some·method\\"\`  @swissquote/swissquote/prettier/prettier
+  18:11  error    Replace \`·a,·b)⏎·\` with \`a,·b)\`                  @swissquote/swissquote/prettier/prettier
+  20:14  error    Expected '===' and instead saw '=='              eqeqeq
 
-✖ 11 problems (9 errors, 2 warnings)
-  7 errors and 0 warnings potentially fixable with the \`--fix\` option.
+✖ 10 problems (8 errors, 2 warnings)
+  6 errors and 0 warnings potentially fixable with the \`--fix\` option.
 
+[js_myBundle] (!) Errors were found
+js/script.js
+[__:__:__] 'js_myBundle' errored after ____ ms
+[__:__:__] Error: Errors were found
+    ...stacktrace...
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
 ",
 }
 `;

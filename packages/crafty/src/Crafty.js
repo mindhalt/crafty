@@ -1,7 +1,5 @@
 const Undertaker = require("undertaker");
 const log = require("fancy-log");
-const fs = require("fs");
-const tmp = require("tmp");
 
 const events = require("./log/events");
 const formatError = require("./log/formatError");
@@ -10,7 +8,7 @@ const watcher = require("./Watcher");
 const Information = require("./log/Information");
 const registerTasks = require("./tasks");
 
-const debug = require("debug")("Crafty");
+const debug = require("debug")("crafty:core");
 
 class Crafty {
   constructor(config) {
@@ -73,6 +71,15 @@ class Crafty {
 
   getImplementations(method) {
     return this.config.loadedPresets.filter(preset => preset[method]);
+  }
+
+  get isPNP() {
+    try {
+      require(`pnpapi`);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   get loglevel() {

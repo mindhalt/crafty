@@ -1,35 +1,39 @@
 {
   "name": "@swissquote/crafty-runner-webpack",
-  "version": "1.4.0",
+  "version": "1.8.0",
   "license": "Apache-2.0",
   "repository": "https://github.com/swissquote/crafty.git",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "../../node_modules/.bin/jest",
-    "test:watch": "../../node_modules/.bin/jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "main": "src/index.js",
   "dependencies": {
-    "case-sensitive-paths-webpack-plugin": "2.1.2",
-    "chalk": "^2.4.1",
+    "ansi-colors": "^4.0.0",
+    "case-sensitive-paths-webpack-plugin": "2.2.0",
     "debug": "^4.1.0",
-    "glob-to-regexp": "0.4.0",
+    "glob-to-regexp": "0.4.1",
     "hash-index": "3.0.0",
-    "is-glob": "4.0.0",
+    "inspectpack": "4.2.2",
+    "is-glob": "4.0.1",
     "mkdirp": "0.5.1",
-    "terser-webpack-plugin": "1.2.1",
-    "webpack": "4.28.3",
-    "webpack-chain": "5.0.1",
-    "webpack-dev-server": "3.1.14",
-    "webpack-merge": "4.1.5",
+    "pnp-webpack-plugin": "^1.2.0",
+    "terser-webpack-plugin": "2.2.1",
+    "webpack": "4.41.2",
+    "webpack-bundle-analyzer": "^3.0.4",
+    "webpack-chain": "6.0.0",
+    "webpack-dev-server": "3.9.0",
+    "webpack-merge": "4.2.2",
     "webpack-stylish": "0.1.8"
   },
   "engines": {
     "node": ">=8.0.0"
   },
   "devDependencies": {
+    "jest": "24.9.0",
     "service-names-port-numbers": "^2.0.0"
   }
 }

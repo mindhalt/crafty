@@ -1,10 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Compiles TypeScript - fork checker 1`] = `
+Object {
+  "status": 0,
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+[__:__:__] Files will be stored in:
+            js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/compiles-forked/dist/js
+[__:__:__] Starting 'default' ...
+[__:__:__] Starting 'js' ...
+[__:__:__] Starting 'js_myBundle' ...
+Starting type checking service...
+Using 1 worker with 2048MB memory limit
+  size  name         module                           status
+  1 kB  2            multi ./js/script.ts             built
+  1 kB  3            ./js/script.ts + 1 modules       built
+  1 kB  4            ./js/SomeLibrary.ts              built
+
+  size  name         asset                            status
+  1 kB  default      myBundle.min.js                  emitted
+  1 kB  default      myBundle.min.js.map              emitted
+  1 kB  someLibrary  someLibrary.myBundle.min.js      emitted
+  1 kB  someLibrary  someLibrary.myBundle.min.js.map  emitted
+
+  (2 modules hidden)
+
+  Compiled successfully!
+  Δt ____ms
+
+[__:__:__] Finished 'js_myBundle' after ____ ms
+[__:__:__] Finished 'js' after ____ ms
+[__:__:__] Finished 'default' after ____ ms
+",
+}
+`;
+
+exports[`Compiles TypeScript - fork checker 2`] = `
+"(function(e,t){if(\\"object\\"===typeof exports&&\\"object\\"===typeof module)module.exports=t();else if(\\"function\\"===typeof define&&define.amd)define([],t);else{var n=t();for(var r in n)(\\"object\\"===typeof exports?exports:e)[r]=n[r]}})(window,(function(){return function(e){function t(t){var n=t[0];var o=t[1];var u,i,a=0,c=[];for(;a<n.length;a++)i=n[a],Object.prototype.hasOwnProperty.call(r,i)&&r[i]&&c.push(r[i][0]),r[i]=0;for(u in o)Object.prototype.hasOwnProperty.call(o,u)&&(e[u]=o[u]);f&&f(t);while(c.length)c.shift()()}var n={};var r={0:0};function o(e){return u.p+\\"\\"+({1:\\"someLibrary\\"}[e]||e)+\\".myBundle.min.js\\"}function u(t){if(n[t])return n[t].exports;var r=n[t]={i:t,l:false,exports:{}};return e[t].call(r.exports,r,r.exports,u),r.l=true,r.exports}u.e=function(e){var t=[];var n=r[e];if(0!==n)if(n)t.push(n[2]);else{var i=new Promise((function(t,o){n=r[e]=[t,o]}));t.push(n[2]=i);var a=document.createElement(\\"script\\");var c;a.charset=\\"utf-8\\",a.timeout=120,u.nc&&a.setAttribute(\\"nonce\\",u.nc),a.src=o(e);var f=new Error;c=function(t){a.onerror=a.onload=null,clearTimeout(l);var n=r[e];if(0!==n){if(n){var o=t&&(\\"load\\"===t.type?\\"missing\\":t.type);var u=t&&t.target&&t.target.src;f.message=\\"Loading chunk \\"+e+\\" failed.\\\\n(\\"+o+\\": \\"+u+\\")\\",f.name=\\"ChunkLoadError\\",f.type=o,f.request=u,n[1](f)}r[e]=void 0}};var l=setTimeout((function(){c({type:\\"timeout\\",target:a})}),12e4);a.onerror=a.onload=c,document.head.appendChild(a)}return Promise.all(t)},u.m=e,u.c=n,u.d=function(e,t,n){u.o(e,t)||Object.defineProperty(e,t,{enumerable:true,get:n})},u.r=function(e){\\"undefined\\"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\\"Module\\"}),Object.defineProperty(e,\\"__esModule\\",{value:true})},u.t=function(e,t){if(1&t&&(e=u(e)),8&t)return e;if(4&t&&\\"object\\"===typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(u.r(n),Object.defineProperty(n,\\"default\\",{enumerable:true,value:e}),2&t&&\\"string\\"!=typeof e)for(var r in e)u.d(n,r,function(t){return e[t]}.bind(null,r));return n},u.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return u.d(t,\\"a\\",t),t},u.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},u.p=\\"\\",u.oe=function(e){throw console.error(e),e};var i=window.webpackJsonp_UNIQID=window.webpackJsonp_UNIQID||[];var a=i.push.bind(i);i.push=t,i=i.slice();for(var c=0;c<i.length;c++)t(i[c]);var f=a;return u(u.s=2)}([function(e,t,n){\\"use strict\\";function r(e,t){if(!(e instanceof t))throw new TypeError(\\"Cannot call a class as a function\\")}n.d(t,\\"a\\",(function(){return r}))},function(e,t,n){\\"use strict\\";function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||false,r.configurable=true,\\"value\\"in r&&(r.writable=true),Object.defineProperty(e,r.key,r)}}function o(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}n.d(t,\\"a\\",(function(){return o}))},function(e,t,n){e.exports=n(3)},function(e,t,n){\\"use strict\\";n.r(t);var r=n(0);var o=n(1);function u(e,t){return e+t}n.d(t,\\"default\\",(function(){return i}));var i=function(){function e(){Object(r.a)(this,e),console.log(\\"init class\\")}return Object(o.a)(e,[{key:\\"method\\",value:function(){console.log(u(2,4)),n.e(1).then(n.bind(null,4)).then((function(e){var t=new e.default;console.log(t.add(2,4))}))}}]),e}()}])}));
+//# sourceMappingURL=myBundle.min.js.map"
+`;
+
+exports[`Compiles TypeScript - fork checker 3`] = `
+"(window.webpackJsonp_UNIQID=window.webpackJsonp_UNIQID||[]).push([[1],{4:function(n,t,u){\\"use strict\\";u.r(t),u.d(t,\\"default\\",(function(){return a}));var e=u(0);var r=u(1);var a=function(){function n(){Object(e.a)(this,n)}return Object(r.a)(n,[{key:\\"add\\",value:function(n,t){return n+t}},{key:\\"substract\\",value:function(n,t){return n-t}},{key:\\"divide\\",value:function(n,t){return n/t}}]),n}()}}]);
+//# sourceMappingURL=someLibrary.myBundle.min.js.map"
+`;
+
 exports[`Compiles TypeScript 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/compiles/dist/js
@@ -38,25 +82,28 @@ Object {
 `;
 
 exports[`Compiles TypeScript 2`] = `
-"(function(e,n){if(\\"object\\"===typeof exports&&\\"object\\"===typeof module)module.exports=n();else if(\\"function\\"===typeof define&&define.amd)define([],n);else{var t=n();for(var r in t)(\\"object\\"===typeof exports?exports:e)[r]=t[r]}})(window,function(){return function(e){function n(n){var t=n[0];var o=n[1];var u,i,c=0,a=[];for(;c<t.length;c++)i=t[c],r[i]&&a.push(r[i][0]),r[i]=0;for(u in o)Object.prototype.hasOwnProperty.call(o,u)&&(e[u]=o[u]);f&&f(n);while(a.length)a.shift()()}var t={};var r={0:0};function o(e){return u.p+\\"\\"+e+\\".myBundle.min.js\\"}function u(n){if(t[n])return t[n].exports;var r=t[n]={i:n,l:false,exports:{}};return e[n].call(r.exports,r,r.exports,u),r.l=true,r.exports}u.e=function(e){var n=[];var t=r[e];if(0!==t)if(t)n.push(t[2]);else{var i=new Promise(function(n,o){t=r[e]=[n,o]});n.push(t[2]=i);var c=document.createElement(\\"script\\");var a;c.charset=\\"utf-8\\",c.timeout=120,u.nc&&c.setAttribute(\\"nonce\\",u.nc),c.src=o(e),a=function(n){c.onerror=c.onload=null,clearTimeout(f);var t=r[e];if(0!==t){if(t){var o=n&&(\\"load\\"===n.type?\\"missing\\":n.type);var u=n&&n.target&&n.target.src;var i=new Error(\\"Loading chunk \\"+e+\\" failed.\\\\n(\\"+o+\\": \\"+u+\\")\\");i.type=o,i.request=u,t[1](i)}r[e]=void 0}};var f=setTimeout(function(){a({type:\\"timeout\\",target:c})},12e4);c.onerror=c.onload=a,document.head.appendChild(c)}return Promise.all(n)},u.m=e,u.c=t,u.d=function(e,n,t){u.o(e,n)||Object.defineProperty(e,n,{enumerable:true,get:t})},u.r=function(e){\\"undefined\\"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\\"Module\\"}),Object.defineProperty(e,\\"__esModule\\",{value:true})},u.t=function(e,n){if(1&n&&(e=u(e)),8&n)return e;if(4&n&&\\"object\\"===typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(u.r(t),Object.defineProperty(t,\\"default\\",{enumerable:true,value:e}),2&n&&\\"string\\"!=typeof e)for(var r in e)u.d(t,r,function(n){return e[n]}.bind(null,r));return t},u.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return u.d(n,\\"a\\",n),n},u.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},u.p=\\"\\",u.oe=function(e){throw console.error(e),e};var i=window.webpackJsonp=window.webpackJsonp||[];var c=i.push.bind(i);i.push=n,i=i.slice();for(var a=0;a<i.length;a++)n(i[a]);var f=c;return u(u.s=2)}([function(e,n,t){\\"use strict\\";function r(e,n){if(!(e instanceof n))throw new TypeError(\\"Cannot call a class as a function\\")}t.d(n,\\"a\\",function(){return r})},function(e,n,t){\\"use strict\\";function r(e,n){for(var t=0;t<n.length;t++){var r=n[t];r.enumerable=r.enumerable||false,r.configurable=true,\\"value\\"in r&&(r.writable=true),Object.defineProperty(e,r.key,r)}}function o(e,n,t){return n&&r(e.prototype,n),t&&r(e,t),e}t.d(n,\\"a\\",function(){return o})},function(e,n,t){e.exports=t(3)},function(e,n,t){\\"use strict\\";t.r(n);var r=t(0);var o=t(1);function u(e,n){return e+n}t.d(n,\\"default\\",function(){return i});var i=function(){function e(){Object(r.a)(this,e),console.log(\\"init class\\")}return Object(o.a)(e,[{key:\\"method\\",value:function(){console.log(u(2,4)),t.e(1).then(t.bind(null,4)).then(function(e){var n=new e.default;console.log(n.add(2,4))})}}]),e}()}])});
+"(function(e,t){if(\\"object\\"===typeof exports&&\\"object\\"===typeof module)module.exports=t();else if(\\"function\\"===typeof define&&define.amd)define([],t);else{var n=t();for(var r in n)(\\"object\\"===typeof exports?exports:e)[r]=n[r]}})(window,(function(){return function(e){function t(t){var n=t[0];var o=t[1];var u,i,a=0,c=[];for(;a<n.length;a++)i=n[a],Object.prototype.hasOwnProperty.call(r,i)&&r[i]&&c.push(r[i][0]),r[i]=0;for(u in o)Object.prototype.hasOwnProperty.call(o,u)&&(e[u]=o[u]);f&&f(t);while(c.length)c.shift()()}var n={};var r={0:0};function o(e){return u.p+\\"\\"+({}[e]||e)+\\".myBundle.min.js\\"}function u(t){if(n[t])return n[t].exports;var r=n[t]={i:t,l:false,exports:{}};return e[t].call(r.exports,r,r.exports,u),r.l=true,r.exports}u.e=function(e){var t=[];var n=r[e];if(0!==n)if(n)t.push(n[2]);else{var i=new Promise((function(t,o){n=r[e]=[t,o]}));t.push(n[2]=i);var a=document.createElement(\\"script\\");var c;a.charset=\\"utf-8\\",a.timeout=120,u.nc&&a.setAttribute(\\"nonce\\",u.nc),a.src=o(e);var f=new Error;c=function(t){a.onerror=a.onload=null,clearTimeout(l);var n=r[e];if(0!==n){if(n){var o=t&&(\\"load\\"===t.type?\\"missing\\":t.type);var u=t&&t.target&&t.target.src;f.message=\\"Loading chunk \\"+e+\\" failed.\\\\n(\\"+o+\\": \\"+u+\\")\\",f.name=\\"ChunkLoadError\\",f.type=o,f.request=u,n[1](f)}r[e]=void 0}};var l=setTimeout((function(){c({type:\\"timeout\\",target:a})}),12e4);a.onerror=a.onload=c,document.head.appendChild(a)}return Promise.all(t)},u.m=e,u.c=n,u.d=function(e,t,n){u.o(e,t)||Object.defineProperty(e,t,{enumerable:true,get:n})},u.r=function(e){\\"undefined\\"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\\"Module\\"}),Object.defineProperty(e,\\"__esModule\\",{value:true})},u.t=function(e,t){if(1&t&&(e=u(e)),8&t)return e;if(4&t&&\\"object\\"===typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(u.r(n),Object.defineProperty(n,\\"default\\",{enumerable:true,value:e}),2&t&&\\"string\\"!=typeof e)for(var r in e)u.d(n,r,function(t){return e[t]}.bind(null,r));return n},u.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return u.d(t,\\"a\\",t),t},u.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},u.p=\\"\\",u.oe=function(e){throw console.error(e),e};var i=window.webpackJsonp_UNIQID=window.webpackJsonp_UNIQID||[];var a=i.push.bind(i);i.push=t,i=i.slice();for(var c=0;c<i.length;c++)t(i[c]);var f=a;return u(u.s=2)}([function(e,t,n){\\"use strict\\";function r(e,t){if(!(e instanceof t))throw new TypeError(\\"Cannot call a class as a function\\")}n.d(t,\\"a\\",(function(){return r}))},function(e,t,n){\\"use strict\\";function r(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||false,r.configurable=true,\\"value\\"in r&&(r.writable=true),Object.defineProperty(e,r.key,r)}}function o(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}n.d(t,\\"a\\",(function(){return o}))},function(e,t,n){e.exports=n(3)},function(e,t,n){\\"use strict\\";n.r(t);var r=n(0);var o=n(1);function u(e,t){return e+t}n.d(t,\\"default\\",(function(){return i}));var i=function(){function e(){Object(r.a)(this,e),console.log(\\"init class\\")}return Object(o.a)(e,[{key:\\"method\\",value:function(){console.log(u(2,4)),n.e(1).then(n.bind(null,4)).then((function(e){var t=new e.default;console.log(t.add(2,4))}))}}]),e}()}])}));
 //# sourceMappingURL=myBundle.min.js.map"
 `;
 
 exports[`Compiles TypeScript 3`] = `
-"(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{4:function(n,t,u){\\"use strict\\";u.r(t),u.d(t,\\"default\\",function(){return a});var e=u(0);var r=u(1);var a=function(){function n(){Object(e.a)(this,n)}return Object(r.a)(n,[{key:\\"add\\",value:function(n,t){return n+t}},{key:\\"substract\\",value:function(n,t){return n-t}},{key:\\"divide\\",value:function(n,t){return n/t}}]),n}()}}]);
+"(window.webpackJsonp_UNIQID=window.webpackJsonp_UNIQID||[]).push([[1],{4:function(n,t,u){\\"use strict\\";u.r(t),u.d(t,\\"default\\",(function(){return a}));var e=u(0);var r=u(1);var a=function(){function n(){Object(e.a)(this,n)}return Object(r.a)(n,[{key:\\"add\\",value:function(n,t){return n+t}},{key:\\"substract\\",value:function(n,t){return n-t}},{key:\\"divide\\",value:function(n,t){return n/t}}]),n}()}}]);
 //# sourceMappingURL=1.myBundle.min.js.map"
+`;
+
+exports[`Compiles TypeScript 4`] = `
+"export default class SomeLibrary {
+    add(a: any, b: any): any;
+    substract(a: any, b: any): number;
+    divide(a: any, b: any): number;
+}
+"
 `;
 
 exports[`Fails gracefully on broken markup 1`] = `
 Object {
   "status": 1,
-  "stderr": "[__:__:__] 'js_myTSBundle' errored after ____ ms
-[__:__:__] Error: Webpack compilation failed
-    ...stacktrace...
-[__:__:__] 'js' errored after ____ ms
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/fails/dist/js
@@ -65,80 +112,224 @@ Object {
 [__:__:__] Starting 'js_myTSBundle' ...
   size  name  module                          status
   1 kB  0     multi ./js/typescript.ts        built
-  1 kB  1     ./js/typescript.ts + 2 modules  built ⚠
+  1 kB  1     ./js/typescript.ts + 2 modules  built ✖
 
   (3 assets hidden)
 
   Failed to compile.
 
+./js/typescript.ts
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/fails/js/typescript.ts
+  14:0  error  Parsing error: Unexpected token. A constructor, method, accessor, or property was expected
+
+✖ 1 problem (1 error, 0 warnings)
+
 __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/fails/js/typescript.ts
 [tsl] ERROR in __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/fails/js/typescript.ts(14,1)
       TS1068: Unexpected token. A constructor, method, accessor, or property was expected.
 
-  Δt ____ms ✖ 2 problems (1 error, 1 warning)
+  Δt ____ms ✖ 2 problems (2 errors, 0 warnings)
 
+[__:__:__] 'js_myTSBundle' errored after ____ ms
+[__:__:__] Webpack compilation failed
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
+",
+}
+`;
+
+exports[`Fails gracefully on invalid TS - fork checker 1`] = `
+Object {
+  "status": 1,
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+[__:__:__] Files will be stored in:
+            js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid-forked/dist/js
+[__:__:__] Starting 'default' ...
+[__:__:__] Starting 'js' ...
+[__:__:__] Starting 'js_myTSBundle' ...
+Starting type checking service...
+Using 1 worker with 2048MB memory limit
+  size  name  module                          status
+  1 kB  0     multi ./js/typescript.ts        built
+  1 kB  1     ./js/typescript.ts + 2 modules  built ✖
+
+  (2 assets hidden)
+
+  Failed to compile.
+
+./js/typescript.ts
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid-forked/js/typescript.ts
+   2:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   3:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+   3:9   warning  Unexpected console statement        no-console
+   5:1   error    Replace \`········\` with \`····\`      @swissquote/swissquote/prettier/prettier
+   5:13  error    'D' was used before it was defined  @swissquote/swissquote/@typescript-eslint/no-use-before-define
+   6:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   8:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   9:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+   9:9   error    Unexpected alert                    no-alert
+  10:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  14:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  15:1   error    Replace \`········\` with \`····\`      @swissquote/swissquote/prettier/prettier
+  15:9   warning  Unexpected console statement        no-console
+  16:1   error    Replace \`····\` with \`··\`            @swissquote/swissquote/prettier/prettier
+  18:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  19:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+  19:9   error    Unexpected alert                    no-alert
+  20:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+
+✖ 18 problems (16 errors, 2 warnings)
+  13 errors and 0 warnings potentially fixable with the \`--fix\` option.
+
+  Δt ____ms ✖ 1 problem (1 error, 0 warnings)
+
+[__:__:__] 'js_myTSBundle' errored after ____ ms
+[__:__:__] Webpack compilation failed
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
+",
+}
+`;
+
+exports[`Fails gracefully on invalid TS 1`] = `
+Object {
+  "status": 1,
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+[__:__:__] Files will be stored in:
+            js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid/dist/js
+[__:__:__] Starting 'default' ...
+[__:__:__] Starting 'js' ...
+[__:__:__] Starting 'js_myTSBundle' ...
+  size  name  module                          status
+  1 kB  0     multi ./js/typescript.ts        built
+  1 kB  1     ./js/typescript.ts + 2 modules  built ✖
+
+  (3 assets hidden)
+
+  Failed to compile.
+
+./js/typescript.ts
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid/js/typescript.ts
+   2:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   3:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+   3:9   warning  Unexpected console statement        no-console
+   5:1   error    Replace \`········\` with \`····\`      @swissquote/swissquote/prettier/prettier
+   5:13  error    'D' was used before it was defined  @swissquote/swissquote/@typescript-eslint/no-use-before-define
+   6:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   8:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+   9:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+   9:9   error    Unexpected alert                    no-alert
+  10:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  14:3   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  15:1   error    Replace \`········\` with \`····\`      @swissquote/swissquote/prettier/prettier
+  15:9   warning  Unexpected console statement        no-console
+  16:1   error    Replace \`····\` with \`··\`            @swissquote/swissquote/prettier/prettier
+  18:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+  19:1   error    Delete \`····\`                       @swissquote/swissquote/prettier/prettier
+  19:9   error    Unexpected alert                    no-alert
+  20:1   error    Delete \`··\`                         @swissquote/swissquote/prettier/prettier
+
+✖ 18 problems (16 errors, 2 warnings)
+  13 errors and 0 warnings potentially fixable with the \`--fix\` option.
+
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid/js/typescript.ts
+[tsl] ERROR in __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/invalid/js/typescript.ts(5,17)
+      TS2339: Property 'someNonExistingMethod' does not exist on type 'D'.
+
+  Δt ____ms ✖ 2 problems (2 errors, 0 warnings)
+
+[__:__:__] 'js_myTSBundle' errored after ____ ms
+[__:__:__] Webpack compilation failed
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
 ",
 }
 `;
 
 exports[`Lints TypeScript with webpack 1`] = `
 Object {
-  "status": 0,
-  "stderr": "",
-  "stdout": "
+  "status": 1,
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/dist/js
 [__:__:__] Starting 'default' ...
 [__:__:__] Starting 'js' ...
 [__:__:__] Starting 'js_myBundle' ...
-  size  name     module                      status
-  1 kB  2        multi ./js/script.ts        built
-  1 kB  3        ./js/script.ts + 1 modules  built ⚠
-  1 kB  4        ./js/SomeLibrary.ts         built ⚠
+  size  name  module                      status
+  1 kB  2     multi ./js/script.ts        built
+  1 kB  3     ./js/script.ts + 1 modules  built ✖
+  1 kB  4     ./js/SomeLibrary.ts         built ✖
 
-  size  name     asset                       status
-  1 kB  js       1.myBundle.min.js           emitted
-  1 kB  map      1.myBundle.min.js.map       emitted
-  1 kB  ts       js/Component.d.ts           emitted
-  1 kB  ts       js/SomeLibrary.d.ts         emitted
-  1 kB  ts       js/script.d.ts              emitted
-  1 kB  default  myBundle.min.js             emitted
-  1 kB  default  myBundle.min.js.map         emitted
+  (7 assets, 2 modules hidden)
 
-  (2 modules hidden)
-
-  Compiled with warnings.
+  Failed to compile.
 
 ./js/Component.ts
-Module Warning (from __PATH__/node_modules/tslint-loader/index.js):
-__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/Component.ts:2:24
-ERROR: 2:24  whitespace       missing whitespace
-ERROR: 3:18  no-multi-spaces  Multiple spaces found before 'b'.
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/Component.ts
+  1:1  error  Replace \`⏎export·function·test(a:\` with \`export·function·test(a:·\`  @swissquote/swissquote/prettier/prettier
+  2:1  error  Prefer default export                                               @swissquote/swissquote/import/prefer-default-export
+  3:1  error  Replace \`···return·a·+···\` with \`··return·a·+\`                      @swissquote/swissquote/prettier/prettier
 
- @ ./js/script.ts 3:0-35 17:18-22
- @ multi ./js/script.ts
+✖ 3 problems (3 errors, 0 warnings)
+  2 errors and 0 warnings potentially fixable with the \`--fix\` option.
 
 ./js/SomeLibrary.ts
-Module Warning (from __PATH__/node_modules/tslint-loader/index.js):
-__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/SomeLibrary.ts:12:5
-ERROR: 12:5  one-line  misplaced opening brace
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/SomeLibrary.ts
+  10:15  error  Delete \`⏎·\`  @swissquote/swissquote/prettier/prettier
 
- @ ./js/script.ts 18:6-29
- @ multi ./js/script.ts
+✖ 1 problem (1 error, 0 warnings)
+  1 error and 0 warnings potentially fixable with the \`--fix\` option.
 
 ./js/script.ts
-Module Warning (from __PATH__/node_modules/tslint-loader/index.js):
-__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/script.ts:6:5
-ERROR: 6:5   no-console  Calls to 'console.log' are not allowed.
-ERROR: 10:5  no-console  Calls to 'console.log' are not allowed.
-ERROR: 13:5  one-line    misplaced opening brace
-ERROR: 16:7  no-console  Calls to 'console.log' are not allowed.
-ERROR: 17:7  semicolon   Missing semicolon
+__PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/lints/js/script.ts
+   1:1   error    Replace \`⏎import·{\` with \`import·{·\`                   @swissquote/swissquote/prettier/prettier
+   5:1   error    Replace \`····constructor·\` with \`··constructor\`        @swissquote/swissquote/prettier/prettier
+   6:5   warning  Unexpected console statement                           no-console
+   7:1   error    Insert \`·\`                                             @swissquote/swissquote/prettier/prettier
+  10:5   warning  Unexpected console statement                           no-console
+  10:17  error    Replace \`·test(·\` with \`test(\`                         @swissquote/swissquote/prettier/prettier
+  12:34  error    Replace \`·(SomeLibrary)·=>⏎···\` with \`SomeLibrary·=>\`  @swissquote/swissquote/prettier/prettier
+  16:7   warning  Unexpected console statement                           no-console
+  17:7   error    Insert \`;\`                                             @swissquote/swissquote/prettier/prettier
 
- @ multi ./js/script.ts default[0]
+✖ 9 problems (6 errors, 3 warnings)
+  6 errors and 0 warnings potentially fixable with the \`--fix\` option.
 
-  Δt ____ms ⚠  3 problems (0 errors, 3 warnings)
+  Δt ____ms ✖ 3 problems (3 errors, 0 warnings)
+
+[__:__:__] 'js_myBundle' errored after ____ ms
+[__:__:__] Webpack compilation failed
+[__:__:__] 'js' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
+",
+}
+`;
+
+exports[`Removes unused classes 1`] = `
+Object {
+  "status": 0,
+  "stdall": "
+[__:__:__] Starting Crafty __version__...
+[__:__:__] Files will be stored in:
+            js: __PATH__/packages/integration/fixtures/crafty-preset-typescript-webpack/tree-shaking/dist/js
+[__:__:__] Starting 'default' ...
+[__:__:__] Starting 'js' ...
+[__:__:__] Starting 'js_myBundle' ...
+  size  name     module                       status
+  1 kB  0        multi ./js/index.ts          built
+  1 kB  1        ./js/index.ts + 3 modules    built
+
+  size  name     asset                        status
+  1 kB  ts       js/imported-typescript.d.ts  emitted
+  1 kB  ts       js/index.d.ts                emitted
+  1 kB  default  myBundle.min.js              emitted
+  1 kB  default  myBundle.min.js.map          emitted
+
+  Compiled successfully!
+  Δt ____ms
 
 [__:__:__] Finished 'js_myBundle' after ____ ms
 [__:__:__] Finished 'js' after ____ ms

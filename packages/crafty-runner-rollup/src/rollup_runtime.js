@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const colors = require("ansi-colors");
 const prettyTime = require("pretty-hrtime");
 
 const paths = require("./utils/paths");
@@ -10,7 +10,7 @@ const batchWarnings = require("./utils/logging");
 const handleError = require("./utils/handleError");
 const relativeId = require("./utils/relativeId");
 
-const debug = require("debug")("rollup-runner");
+const debug = require("debug")("crafty:runner-rollup");
 
 function buildConfiguration(crafty, taskName, bundle, warnings) {
   const destination = path.join(
@@ -24,7 +24,6 @@ function buildConfiguration(crafty, taskName, bundle, warnings) {
       input: bundle.source,
       plugins: {
         // eslint
-        // tslint
         json: {
           plugin: require("rollup-plugin-json"),
           weight: 10
@@ -38,8 +37,14 @@ function buildConfiguration(crafty, taskName, bundle, warnings) {
             "process.env.NODE_ENV": `"${crafty.getEnvironment()}"`
           }
         },
+        pnpResolve: {
+          plugin: require("rollup-plugin-pnp-resolve"),
+          weight: 35
+        },
         resolve: {
-          plugin: require("rollup-plugin-node-resolve"),
+          plugin: crafty.isPNP
+            ? () => ({ name: `node-resolve-noop` })
+            : require("rollup-plugin-node-resolve"),
           weight: 40,
           options: {
             browser: true
@@ -63,9 +68,6 @@ function buildConfiguration(crafty, taskName, bundle, warnings) {
                 return /@preserve|@license|@cc_on|@class/i.test(comment.value);
               }
             }
-          },
-          init: plugin => {
-            return plugin.plugin(plugin.options, plugin.minifier);
           }
         }
       },
@@ -142,7 +144,7 @@ module.exports = function jsTaskES6(crafty, bundle) {
       const rollup = require("rollup");
       const config = buildConfiguration(crafty, taskName, bundle, warnings.add);
 
-      crafty.log(`Start watching with webpack in '${chalk.cyan(taskName)}'`);
+      crafty.log(`Start watching with webpack in '${colors.cyan(taskName)}'`);
       const watchOptions = Object.assign({}, config.input, {
         output: config.output,
         watch: config.watch
@@ -163,26 +165,26 @@ module.exports = function jsTaskES6(crafty, bundle) {
             break;
 
           case "START":
-            crafty.log(`Watch ready for '${chalk.cyan(taskName)}'`);
+            crafty.log(`Watch ready for '${colors.cyan(taskName)}'`);
             break;
 
           case "BUNDLE_START":
-            crafty.log(`Starting '${chalk.cyan(taskName)}' ...`);
+            crafty.log(`Starting '${colors.cyan(taskName)}' ...`);
             break;
 
           case "BUNDLE_END":
             const time = prettyTime(msToHrtime(event.duration));
             crafty.log(
-              `Finished '${chalk.cyan(taskName)}' after ${chalk.magenta(
+              `Finished '${colors.cyan(taskName)}' after ${colors.magenta(
                 time
-              )}\n           Wrote ${chalk.bold(
+              )}\n           Wrote ${colors.bold(
                 event.output.map(relativeId).join(", ")
               )}\n           Waiting for changes...`
             );
             break;
 
           case "END":
-          ///crafty.log(`'${chalk.cyan(taskName)}' is Waiting for changes...`);
+          ///crafty.log(`'${colors.cyan(taskName)}' is Waiting for changes...`);
         }
       });
     }

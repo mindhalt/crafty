@@ -1,13 +1,15 @@
 /* global describe, it, expect */
 
-const fs = require("fs");
 const path = require("path");
-
-const rimraf = require("rimraf");
+const rmfr = require("rmfr");
 const configuration = require("@swissquote/crafty/src/configuration");
 const getCommands = require("@swissquote/crafty/src/commands/index");
 
 const testUtils = require("../utils");
+
+// Add a high timeout because of https://github.com/facebook/jest/issues/8942
+// Tests would be unreliable if they timeout >_<
+jest.setTimeout(30000);
 
 const getCrafty = configuration.getCrafty;
 
@@ -18,22 +20,14 @@ it("Loads crafty-preset-postcss, crafty-runner-gulp and registers gulp task", ()
     config
   );
 
-  const loadedPresets = [
-    require("@swissquote/crafty-preset-postcss"),
-    require("@swissquote/crafty-runner-gulp"),
-    Object.assign({ presetName: "crafty.config.js" }, config)
-  ];
-
-  expect(crafty.config.loadedPresets).toEqual(loadedPresets);
+  const loadedPresets = crafty.config.loadedPresets.map(
+    preset => preset.presetName
+  );
+  expect(loadedPresets).toContain("@swissquote/crafty-preset-postcss");
+  expect(loadedPresets).toContain("@swissquote/crafty-runner-gulp");
 
   const commands = getCommands(crafty);
-  expect(Object.keys(commands)).toEqual([
-    "cssLint",
-    "help",
-    "run",
-    "watch",
-    "test"
-  ]);
+  expect(Object.keys(commands)).toContain("cssLint");
 
   crafty.createTasks();
   expect(Object.keys(crafty.undertaker._registry.tasks())).toEqual([
@@ -42,102 +36,105 @@ it("Loads crafty-preset-postcss, crafty-runner-gulp and registers gulp task", ()
   ]);
 });
 
-it("Doesn't compile without a task, but lints", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/no-bundle")
+it("Doesn't compile without a task, but lints", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/no-bundle"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(testUtils.exists(cwd, "dist")).toBeFalsy();
 });
 
-it("Doesn't compile without a task, but lints (doesn't throw in development)", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/no-bundle-dev")
+it("Doesn't compile without a task, but lints (doesn't throw in development)", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/no-bundle-dev"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(testUtils.exists(cwd, "dist")).toBeFalsy();
 });
 
-it("Fails gracefully on broken markup", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/fails")
+it("Fails gracefully on broken markup", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/fails"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist")).toBeFalsy();
+  expect(testUtils.exists(cwd, "dist")).toBeFalsy();
 });
 
-it("Experiment with all CSS", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/experiment")
+it("Experiment with all CSS", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/experiment"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/css/myBundle.min.css")).toBeTruthy();
-  expect(fs.existsSync("dist/css/myBundle.min.css.map")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css.map")).toBeTruthy();
 
   expect(
     testUtils.snapshotizeCSS(
-      fs.readFileSync("dist/css/myBundle.min.css").toString("utf8")
+      testUtils.readFile(cwd, "dist/css/myBundle.min.css")
     )
   ).toMatchSnapshot();
 });
 
-it("Compiles CSS", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-postcss-gulp/compiles")
+it("Compiles CSS", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/compiles"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/css/myBundle.min.css")).toBeTruthy();
-  expect(fs.existsSync("dist/css/myBundle.min.css.map")).toBeTruthy();
-  expect(fs.existsSync("dist/css/imported.scss")).toBeFalsy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css.map")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/imported.scss")).toBeFalsy();
 
-  expect(fs.readFileSync("dist/css/myBundle.min.css").toString("utf8")).toEqual(
+  expect(testUtils.readFile(cwd, "dist/css/myBundle.min.css")).toEqual(
     ".Link{color:#00f}.BodyComponent{margin:0}\n/*# sourceMappingURL=myBundle.min.css.map */\n"
   );
 });
 
-it("Compiles CSS, configuration has overrides", () => {
-  process.chdir(
-    path.join(
-      __dirname,
-      "../fixtures/crafty-preset-postcss-gulp/compiles-with-overrides"
-    )
+it("Compiles CSS, configuration has overrides", async () => {
+  const cwd = path.join(
+    __dirname,
+    "../fixtures/crafty-preset-postcss-gulp/compiles-with-overrides"
   );
-  rimraf.sync("dist");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "default"]);
+  const result = await testUtils.run(["run", "default"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/css/myBundle.min.css")).toBeTruthy();
-  expect(fs.existsSync("dist/css/myBundle.min.css.map")).toBeTruthy();
-  expect(fs.existsSync("dist/css/imported.scss")).toBeFalsy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/myBundle.min.css.map")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/css/imported.scss")).toBeFalsy();
 
-  expect(fs.readFileSync("dist/css/myBundle.min.css").toString("utf8")).toEqual(
+  expect(testUtils.readFile(cwd, "dist/css/myBundle.min.css")).toEqual(
     ".Link{color:#fa5b35}.BodyComponent{margin:0}\n/*# sourceMappingURL=myBundle.min.css.map */\n"
   );
 });

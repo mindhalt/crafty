@@ -1,4 +1,5 @@
-const debug = require("debug")("webpack-runner");
+const crypto = require('crypto');
+const debug = require("debug")("crafty:runner-webpack");
 const path = require("path");
 const fs = require("fs");
 const WebpackChain = require("webpack-chain");
@@ -20,6 +21,37 @@ function prepareExternals(externals) {
 
     return globToRegex(external);
   });
+}
+
+/**
+ * The jsonp function is used to load async chunks
+ * We generate a name that is as unique as possible
+ * Because if multiple webpack bundles are loaded at the same time
+ * they might conflict
+ * 
+ * @param {Boolean} isWatching 
+ * @param {Bundle} bundle 
+ */
+function generateJsonpName(isWatching, bundle) {
+  // For testing we need to pre-hardcode it
+  // If we don't, the minification will have weird effects
+  if (process.env.TESTING_CRAFTY) {
+    return "webpackJsonp_UNIQID";
+  }
+
+  let name;
+  if (isWatching) {
+    // Use a name that is reproducible in watch mode
+    // This mode just needs a hash that is different enough
+    name = `${process.cwd()}-${bundle.taskName}`;
+  } else {
+    // In production mode, we want this id to be as unique as possible
+    name = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  }
+
+  const hashed = crypto.createHash('sha1').update(name).digest("hex").substring(0,8);
+
+  return `webpackJsonp_${hashed}`;
 }
 
 module.exports = function(crafty, bundle, webpackPort) {
@@ -66,10 +98,26 @@ module.exports = function(crafty, bundle, webpackPort) {
   chain.output
     .path(absolutePath(destination)) // The build folder.
     .filename(bundle.destination) // Generated JS file names (with nested folders).
+    .chunkFilename(`[name].${bundle.destination}`)
     .libraryTarget(bundle.libraryTarget || "umd") // The destination type
-    .library(bundle.library || ""); // The library name
+    .library(bundle.library || "") // The library name
+    .jsonpFunction(generateJsonpName(isWatching, bundle)); // TODO :: change that
 
   chain.externals(prepareExternals(bundle.externals));
+
+  // Enable support for Yarn PNP
+  const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
+  chain.resolve
+    .plugin("pnp-webpack-plugin")
+    // Cloning the plugin exports as this would otherwise
+    // fail with `Cannot redefine property: __pluginArgs`
+    .init(Plugin => ({ ...Plugin }))
+    .use(PnpWebpackPlugin);
+
+  chain.resolveLoader
+    .plugin("pnp-webpack-plugin")
+    .init(Plugin => Plugin.moduleLoader(module))
+    .use(PnpWebpackPlugin);
 
   // Minimization is enabled only in production but we still
   // define it here in case someone needs to minify in development.
@@ -85,10 +133,6 @@ module.exports = function(crafty, bundle, webpackPort) {
     ]);
 
   if (crafty.getEnvironment() === "production") {
-    // Because in some cases, comments on classes are /** @class */
-    // We transform them into /* @__PURE__ */ so UglifyJS is able to remove them when unused.
-    chain.plugin("pure_classes").use(require.resolve("./PureClassesPlugin"));
-
     // Don't emit files if an error occured (forces to check what the error is)
     chain.optimization.noEmitOnErrors(true);
   }
@@ -137,18 +181,36 @@ module.exports = function(crafty, bundle, webpackPort) {
       });
   }
 
+  // If --profile is passed, we create a
+  // profile that we'll later write to disk
+  if (process.argv.some(arg => arg === "--profile")) {
+    chain.profile(true);
+
+    chain
+      .plugin("bundle-analyzer")
+      .init((Plugin, args) => new Plugin.BundleAnalyzerPlugin(...args))
+      .use(require.resolve("webpack-bundle-analyzer"), [
+        {
+          analyzerMode: "static",
+          openAnalyzer: false,
+          reportFilename: `${bundle.name}_report.html`,
+          generateStatsFile: true,
+          statsFilename: `${bundle.name}_stats.json`
+        }
+      ]);
+
+    chain
+      .plugin("inspectpack")
+      .init((Plugin, args) => new Plugin.DuplicatesPlugin(...args))
+      .use(require.resolve("inspectpack/plugin"), [{}]);
+  }
+
   // Apply preset configuration
   crafty.getImplementations("webpack").forEach(preset => {
     debug(preset.presetName + ".webpack(Crafty, bundle, chain)");
     preset.webpack(crafty, bundle, chain);
     debug("added webpack");
   });
-
-  // If --profile is passed, we create a
-  // profile that we'll later write to disk
-  if (process.argv.some(arg => arg === "--profile")) {
-    chain.profile(true);
-  }
 
   return chain.toConfig();
 };

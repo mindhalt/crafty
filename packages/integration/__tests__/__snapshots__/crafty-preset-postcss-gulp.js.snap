@@ -3,8 +3,7 @@
 exports[`Compiles CSS 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/compiles/dist/css
@@ -23,8 +22,7 @@ Object {
 exports[`Compiles CSS, configuration has overrides 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/compiles-with-overrides/dist/css
@@ -43,8 +41,7 @@ Object {
 exports[`Doesn't compile without a task, but lints (doesn't throw in development) 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/no-bundle-dev/dist/css
@@ -61,7 +58,7 @@ css/style.scss
  15:1   ✖  A state must be linked to a component                                 swissquote/no-state-without-component
  20:1   ✖  Expected \\"#no-id\\" to have no more than 0 ID selectors                 selector-max-id
  28:13  ✖  Expected nesting depth to be no more than 2                           max-nesting-depth
- 31:5   ⚠  Unexpected missing end-of-source newline                              no-missing-end-of-source-newline
+ 31:6   ⚠  Insert \\"⏎\\"                                                            prettier/prettier
 
 [__:__:__] Finished 'css__lint' after ____ ms
 [__:__:__] Finished 'default' after ____ ms
@@ -72,11 +69,7 @@ css/style.scss
 exports[`Doesn't compile without a task, but lints 1`] = `
 Object {
   "status": 1,
-  "stderr": "[__:__:__] 'css__lint' errored after ____ ms
-[__:__:__] Stylelint: Errors were found
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/no-bundle/dist/css
@@ -93,8 +86,11 @@ css/style.scss
  15:1   ✖  A state must be linked to a component                                 swissquote/no-state-without-component
  20:1   ✖  Expected \\"#no-id\\" to have no more than 0 ID selectors                 selector-max-id
  28:13  ✖  Expected nesting depth to be no more than 2                           max-nesting-depth
- 31:5   ✖  Unexpected missing end-of-source newline                              no-missing-end-of-source-newline
+ 31:6   ✖  Insert \\"⏎\\"                                                            prettier/prettier
 
+[__:__:__] 'css__lint' errored after ____ ms
+[__:__:__] Stylelint: Errors were found
+[__:__:__] 'default' errored after ____ ms
 ",
 }
 `;
@@ -102,8 +98,7 @@ css/style.scss
 exports[`Experiment with all CSS 1`] = `
 Object {
   "status": 0,
-  "stderr": "",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/experiment/dist/css
@@ -113,6 +108,18 @@ Object {
 [__:__:__] Finished 'css_myBundle' after ____ ms
 [__:__:__] Finished 'css' after ____ ms
 [__:__:__] Starting 'css__lint' ...
+
+css/foo.scss
+ 1:8  ⚠  Replace \\"·background:·#eee;·\\" with \\"⏎····background:·#eee;⏎\\"   prettier/prettier
+
+css/math.scss
+ 6:37  ✖  Using \\"-\\" in front of \\"var()\\" doesn't work, use \\"calc(var(...) * -1)\\"  swissquote/no-negative-var
+
+css/style.scss
+ 104:5  ⚠  Unexpected browser feature \\"css-resize\\" is not supported by IE 11, Edge 15,16,17,18, iOS Safari 10.0-10.2,10.3,11.0-11.2,11.3-11.4,12.0-12.1,12.2-12.3,13.0-13.1, Samsung Internet 4   plugin/no-unsupported-browser-features
+ 274:5  ⚠  Unexpected browser feature \\"flexbox\\" is only partially supported by IE 11                                                                                                              plugin/no-unsupported-browser-features
+ 295:5  ⚠  Unexpected browser feature \\"wordwrap\\" is only partially supported by IE 11, Edge 15,16,17                                                                                              plugin/no-unsupported-browser-features
+
 [__:__:__] Finished 'css__lint' after ____ ms
 [__:__:__] Finished 'default' after ____ ms
 ",
@@ -120,10 +127,13 @@ Object {
 `;
 
 exports[`Experiment with all CSS 2`] = `
-"
-/* Import CSS Files (postcss-import, postcss-url) */
+"/* Import CSS Files (postcss-import, postcss-url) */
 
 .Body { background: #eee; }
+
+.Component {
+    margin: 5px -var(--Component-margin);
+}
 
 @media (min-width: 25em) {
 .Button {
@@ -264,19 +274,23 @@ exports[`Experiment with all CSS 2`] = `
         background: url(\\"icons/baz.png\\");
     }
 
-.Button--1 { width: 1px; }
+.Button--1 {
+        width: 1px;
+    }
 
-.Button--2 { width: 2px; }
+.Button--2 {
+        width: 2px;
+    }
 
-.Button--3 { width: 3px; }
+.Button--3 {
+        width: 3px;
+    }
 
 /* Initial Values (postcss-initial) */
 
 .Link {
-    -webkit-animation: none 0s ease 0s 1 normal none running;
-            animation: none 0s ease 0s 1 normal none running;
-    -webkit-animation: initial;
-            animation: initial;
+    animation: none 0s ease 0s 1 normal none running;
+    animation: initial;
     background: transparent none repeat 0 0 / auto auto padding-box border-box scroll;
     background: initial;
     white-space: normal;
@@ -295,41 +309,52 @@ exports[`Experiment with all CSS 2`] = `
  */
 
 .Quote {
-    background: rgba(153, 221, 153, .8);   /* This will create a fallback without the alpha*/
+    /* This will create a fallback without the alpha*/
+    background: rgba(153, 221, 153, .8);
 
-    border-color: rgba(153,221,153,0.8);                    /* This will be transformed to rgba*/
+    /* This will be transformed to rgba*/
+    border-color: rgba(153,221,153,0.8);
 
-    color: #639;                   /* ... sad story, homage to eric meyer*/
+    /* ... sad story, homage to Eric Meyer*/
+    color: #639;
 }
 
 .Quote--clear {
-    background: rgb(251, 255, 255);           /* Allows to declare colors with rgb() level 4*/
+    /* Allows to declare colors with rgb() level 4*/
+    background: rgb(251, 255, 255);
 
-    color: hsla(180, 100%, 50%, .2);       /* This will declare colors with hsl() level 4*/
+    /* This will declare colors with hsl() level 4*/
+    color: hsla(180, 100%, 50%, .2);
 
-    border-color: rgba(128, 255, 0, .5);       /* This will transform colors to rgba()*/
+    /* This will transform colors to rgba()*/
+    border-color: rgba(128, 255, 0, .5);
 }
 
 /* Color manipulation */
 
 .Link {
-    color: rgba(255, 0, 0, 0.9);      /* Change the opacity of red*/
+    /* Change the opacity of red*/
+    color: rgba(255, 0, 0, 0.9);
 }
 
 .Link:hover {
-    color: rgb(51, 0, 0);   /* Darken the color*/
+    /* Darken the color*/
+    color: rgb(51, 0, 0);
 }
 
 .Link {
-    color: rgba(128, 255, 0, .6);        /* This will be transformed to rgba*/
+    /* This will be transformed to rgba*/
+    color: rgba(128, 255, 0, .6);
 }
 
 /* Levels of gray */
 
 .Text {
-    color: rgb(212,212,212);            /* Level of gray*/
+    /* Level of gray*/
+    color: rgb(212,212,212);
 
-    background: gray(10%, 50%); /* Level of gray with opacity*/
+    /* Level of gray with opacity*/
+    background: gray(10%, 50%);
 }
 
 /* Selectors:
@@ -364,15 +389,11 @@ button:hover,button:focus,.button:hover,.button:focus {
     background-color: yellow;
 }
 
-.Navigation :-moz-any-link {
-    background-color: yellow;
-}
-
 .Navigation :any-link {
     background-color: yellow;
 }
 
-[frame=hsides],[frame=Hsides],[frame=hSides],[frame=HSides],[frame=hsIdes],[frame=HsIdes],[frame=hSIdes],[frame=HSIdes],[frame=hsiDes],[frame=HsiDes],[frame=hSiDes],[frame=HSiDes],[frame=hsIDes],[frame=HsIDes],[frame=hSIDes],[frame=HSIDes],[frame=hsidEs],[frame=HsidEs],[frame=hSidEs],[frame=HSidEs],[frame=hsIdEs],[frame=HsIdEs],[frame=hSIdEs],[frame=HSIdEs],[frame=hsiDEs],[frame=HsiDEs],[frame=hSiDEs],[frame=HSiDEs],[frame=hsIDEs],[frame=HsIDEs],[frame=hSIDEs],[frame=HSIDEs],[frame=hsideS],[frame=HsideS],[frame=hSideS],[frame=HSideS],[frame=hsIdeS],[frame=HsIdeS],[frame=hSIdeS],[frame=HSIdeS],[frame=hsiDeS],[frame=HsiDeS],[frame=hSiDeS],[frame=HSiDeS],[frame=hsIDeS],[frame=HsIDeS],[frame=hSIDeS],[frame=HSIDeS],[frame=hsidES],[frame=HsidES],[frame=hSidES],[frame=HSidES],[frame=hsIdES],[frame=HsIdES],[frame=hSIdES],[frame=HSIdES],[frame=hsiDES],[frame=HsiDES],[frame=hSiDES],[frame=HSiDES],[frame=hsIDES],[frame=HsIDES],[frame=hSIDES],[frame=HSIDES] {
+[frame=\\"hsides\\"],[frame=\\"Hsides\\"],[frame=\\"hSides\\"],[frame=\\"HSides\\"],[frame=\\"hsIdes\\"],[frame=\\"HsIdes\\"],[frame=\\"hSIdes\\"],[frame=\\"HSIdes\\"],[frame=\\"hsiDes\\"],[frame=\\"HsiDes\\"],[frame=\\"hSiDes\\"],[frame=\\"HSiDes\\"],[frame=\\"hsIDes\\"],[frame=\\"HsIDes\\"],[frame=\\"hSIDes\\"],[frame=\\"HSIDes\\"],[frame=\\"hsidEs\\"],[frame=\\"HsidEs\\"],[frame=\\"hSidEs\\"],[frame=\\"HSidEs\\"],[frame=\\"hsIdEs\\"],[frame=\\"HsIdEs\\"],[frame=\\"hSIdEs\\"],[frame=\\"HSIdEs\\"],[frame=\\"hsiDEs\\"],[frame=\\"HsiDEs\\"],[frame=\\"hSiDEs\\"],[frame=\\"HSiDEs\\"],[frame=\\"hsIDEs\\"],[frame=\\"HsIDEs\\"],[frame=\\"hSIDEs\\"],[frame=\\"HSIDEs\\"],[frame=\\"hsideS\\"],[frame=\\"HsideS\\"],[frame=\\"hSideS\\"],[frame=\\"HSideS\\"],[frame=\\"hsIdeS\\"],[frame=\\"HsIdeS\\"],[frame=\\"hSIdeS\\"],[frame=\\"HSIdeS\\"],[frame=\\"hsiDeS\\"],[frame=\\"HsiDeS\\"],[frame=\\"hSiDeS\\"],[frame=\\"HSiDeS\\"],[frame=\\"hsIDeS\\"],[frame=\\"HsIDeS\\"],[frame=\\"hSIDeS\\"],[frame=\\"HSIDeS\\"],[frame=\\"hsidES\\"],[frame=\\"HsidES\\"],[frame=\\"hSidES\\"],[frame=\\"HSidES\\"],[frame=\\"hsIdES\\"],[frame=\\"HsIdES\\"],[frame=\\"hSIdES\\"],[frame=\\"HSIdES\\"],[frame=\\"hsiDES\\"],[frame=\\"HsiDES\\"],[frame=\\"hSiDES\\"],[frame=\\"HSiDES\\"],[frame=\\"hsIDES\\"],[frame=\\"HsIDES\\"],[frame=\\"hSIDES\\"],[frame=\\"HSIDES\\"] {
     border-style: solid none;
 }
 
@@ -391,7 +412,6 @@ button:hover,button:focus,.button:hover,.button:focus {
 /* Vendor Prefixes (autoprefixer) */
 
 :-webkit-full-screen .Link {
-    display: -webkit-flex;
     display: flex;
 }
 
@@ -400,13 +420,10 @@ button:hover,button:focus,.button:hover,.button:focus {
 }
 
 :-ms-fullscreen .Link {
-    display: -ms-flexbox;
     display: flex;
 }
 
 :fullscreen .Link {
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
 }
 
@@ -433,19 +450,16 @@ button:hover,button:focus,.button:hover,.button:focus {
 
 .Buy {
     background: linear-gradient(to bottom, #1e5799, #7db9e8);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff1e5799', endColorstr='#ff7db9e8', GradientType=0);
 }
 
 .Heading.Heading--small {
     -webkit-font-feature-settings: \\"c2sc\\";
-       -moz-font-feature-settings: \\"c2sc\\";
             font-feature-settings: \\"c2sc\\";
     font-variant-caps: small-caps;
 }
 
 .Table {
     -webkit-font-feature-settings: \\"lnum\\";
-       -moz-font-feature-settings: \\"lnum\\";
             font-feature-settings: \\"lnum\\";
     font-variant-numeric: lining-nums;
 }
@@ -469,27 +483,27 @@ button:hover,button:focus,.button:hover,.button:focus {
 exports[`Fails gracefully on broken markup 1`] = `
 Object {
   "status": 1,
-  "stderr": "[__:__:__] 'css_myBundle' errored after ____ ms
-[__:__:__] CssSyntaxError in plugin \\"gulp-postcss\\"
-Message:
-    __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/fails/css/style.scss:4:1: Unexpected }
-
-  2 | .BodyComponent
-  3 |     margin: 0;
-> 4 | }
-    | ^
-  5 |
-
-[__:__:__] 'css' errored after ____ ms
-[__:__:__] 'default' errored after ____ ms
-",
-  "stdout": "
+  "stdall": "
 [__:__:__] Starting Crafty __version__...
 [__:__:__] Files will be stored in:
             css: __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/fails/dist/css
 [__:__:__] Starting 'default' ...
 [__:__:__] Starting 'css' ...
 [__:__:__] Starting 'css_myBundle' ...
+[__:__:__] 'css_myBundle' errored after ____ ms
+[__:__:__] CssSyntaxError in plugin \\"gulp-postcss\\"
+Message:
+    __PATH__/packages/integration/fixtures/crafty-preset-postcss-gulp/fails/css/style.scss:3:5: Unknown word
+
+  1 |
+  2 | .BodyComponent
+> 3 |     margin: 0;
+    |     ^
+  4 | }
+  5 |
+
+[__:__:__] 'css' errored after ____ ms
+[__:__:__] 'default' errored after ____ ms
 ",
 }
 `;

@@ -1,10 +1,9 @@
 const path = require("path");
 const fs = require("fs");
 
-const chalk = require("chalk");
-
+const colors = require("ansi-colors");
 const mkdirp = require("mkdirp");
-const debug = require("debug")("crafty-runner-webpack");
+const debug = require("debug")("crafty:runner-webpack");
 
 const portFinder = require("./utils/find-port");
 const webpackConfigurator = require("./webpack");
@@ -17,7 +16,7 @@ function prepareConfiguration(crafty, bundle, webpackPort) {
   const configPath = path.join(process.cwd(), "webpack.config.js");
 
   if (fs.existsSync(configPath)) {
-    crafty.log("Merging SQ webpack config with " + chalk.magenta(configPath));
+    crafty.log("Merging SQ webpack config with " + colors.magenta(configPath));
     const webpackMerge = require("webpack-merge");
     webpackConfig = webpackMerge.smart(webpackConfig, require(configPath));
   }
@@ -27,60 +26,33 @@ function prepareConfiguration(crafty, bundle, webpackPort) {
   return webpackConfig;
 }
 
-function onDone(crafty, webpackConfig, compiler, bundle) {
-  return stats => {
-    // If we are in watch mode, the bundle is only generated in memory
-    // This will copy it to disk, to make refreshes work fine
-    // as we don't use the dev-server as a proxy
-    if (crafty.isWatching()) {
-      Object.keys(stats.compilation.assets)
-        .map(key => stats.compilation.assets[key])
-        .filter(asset => asset.emitted)
-        .forEach(asset => {
-          const file = asset.existsAt;
-          compiler.outputFileSystem.readFile(file, (err, result) => {
-            if (err) {
-              throw err;
-            }
-
-            mkdirp.sync(path.dirname(file));
-
-            fs.writeFile(file, result, err2 => {
-              if (err2) {
-                throw err2;
-              }
-            });
-          });
-        });
-    }
-
-    // Write a complete profile for the webpack run if needed
-    if (webpackConfig.profile) {
-      const profile = `${webpackConfig.output.path}${path.sep}${
-        bundle.name
-      }.json`;
-
-      mkdirp.sync(path.dirname(profile));
-
-      fs.writeFile(profile, JSON.stringify(stats.toJson()), err3 => {
-        if (!err3) {
-          console.log(`Profile written to '${profile}'`);
+function copyToDisk(stats, compiler) {
+  Object.keys(stats.compilation.assets)
+    .map(key => stats.compilation.assets[key])
+    .filter(asset => asset.emitted)
+    .forEach(asset => {
+      const file = asset.existsAt;
+      compiler.outputFileSystem.readFile(file, (err, result) => {
+        if (err) {
+          throw err;
         }
-      });
-    }
 
-    webpackOutput(stats, compiler);
-  };
+        mkdirp.sync(path.dirname(file));
+
+        fs.writeFile(file, result, err2 => {
+          if (err2) {
+            throw err2;
+          }
+        });
+      });
+    });
 }
 
 // Print out errors
-function printErrors(summary, errors) {
+function printError(summary, error) {
   console.log(summary);
   console.log();
-  errors.forEach(err => {
-    console.log(err.message || err);
-    console.log();
-  });
+  console.log(error);
 }
 
 /**
@@ -110,10 +82,16 @@ module.exports = function jsTaskES6(crafty, bundle) {
         console.log("Compiling...");
       });
 
-      compiler.hooks.done.tap(
-        "CraftyRuntime",
-        onDone(crafty, config, compiler, bundle)
-      );
+      compiler.hooks.done.tap("CraftyRuntime", stats => {
+        // If we are in watch mode, the bundle is only generated in memory
+        // This will copy it to disk, to make refreshes work fine
+        // as we don't use the dev-server as a proxy
+        if (crafty.isWatching()) {
+          copyToDisk(stats, compiler);
+        }
+
+        webpackOutput(stats, compiler);
+      });
 
       return { compiler, config };
     });
@@ -170,21 +148,24 @@ module.exports = function jsTaskES6(crafty, bundle) {
       .then(({ compiler, config }) => {
         compiler.run((err, stats) => {
           if (err) {
-            printErrors("Failed to compile.", [err]);
-            return cb("Webpack compilation failed");
+            if (err instanceof Error) {
+              return cb(err);
+            } else {
+              printError("Failed to compile.", err);
+              return cb(new crafty.Information("Webpack compilation failed"));
+            }
           }
 
           if (stats.compilation.errors && stats.compilation.errors.length) {
             // Those errors are printed by "onDone"
-            //printErrors('Failed to compile.', stats.compilation.errors);
-            return cb("Webpack compilation failed");
+            return cb(new crafty.Information("Webpack compilation failed"));
           }
 
           return cb();
         });
       })
       .catch(e => {
-        printErrors("Failed to compile.", [e]);
+        printError("Failed to compile.", e);
         cb(e);
       });
   });

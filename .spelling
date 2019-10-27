@@ -10,12 +10,14 @@ Lerna
 Maven
 Node.js
 NPM
+PHPStorm
+Prettier
 PostCSS
 rollup.js
 Sass
 Sinon
 stylelint
-TSLint
+Terser
 UglifyJS
 Webpack
 IntelliJ
@@ -24,6 +26,7 @@ SonarQube
 Pundle
 JSHint
 npx
+Webstorm
 
 # Libraries
 jsdom

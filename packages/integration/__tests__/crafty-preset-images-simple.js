@@ -2,27 +2,23 @@
 
 const fs = require("fs");
 const path = require("path");
-
-const rimraf = require("rimraf");
+const rmfr = require("rmfr");
 const configuration = require("@swissquote/crafty/src/configuration");
-const getCommands = require("@swissquote/crafty/src/commands/index");
-
 const testUtils = require("../utils");
+
+// Add a high timeout because of https://github.com/facebook/jest/issues/8942
+// Tests would be unreliable if they timeout >_<
+jest.setTimeout(30000);
 
 const getCrafty = configuration.getCrafty;
 
 it("Loads crafty-preset-images-simple and does not register gulp tasks", () => {
   const crafty = getCrafty(["@swissquote/crafty-preset-images-simple"], {});
 
-  const loadedPresets = [
-    require("@swissquote/crafty-preset-images-simple"),
-    { presetName: "crafty.config.js" }
-  ];
-
-  expect(crafty.config.loadedPresets).toEqual(loadedPresets);
-
-  const commands = getCommands(crafty);
-  expect(Object.keys(commands)).toEqual(["help", "run", "watch", "test"]);
+  const loadedPresets = crafty.config.loadedPresets.map(
+    preset => preset.presetName
+  );
+  expect(loadedPresets).toContain("@swissquote/crafty-preset-images-simple");
 
   crafty.createTasks();
   expect(Object.keys(crafty.undertaker._registry.tasks())).toEqual([]);
@@ -38,14 +34,12 @@ it("Fails if both crafty-preset-images-simple and crafty-preset-images-simple ar
     {}
   );
 
-  const loadedPresets = [
-    require("@swissquote/crafty-preset-images"),
-    require("@swissquote/crafty-preset-images-simple"),
-    require("@swissquote/crafty-runner-gulp"),
-    { presetName: "crafty.config.js" }
-  ];
-
-  expect(crafty.config.loadedPresets).toEqual(loadedPresets);
+  const loadedPresets = crafty.config.loadedPresets.map(
+    preset => preset.presetName
+  );
+  expect(loadedPresets).toContain("@swissquote/crafty-preset-images");
+  expect(loadedPresets).toContain("@swissquote/crafty-preset-images-simple");
+  expect(loadedPresets).toContain("@swissquote/crafty-runner-gulp");
 
   expect(() => crafty.createTasks()).toThrow(
     "Failed registering 'crafty-preset-images-simple' a task with this name already exists"
@@ -61,16 +55,11 @@ it("Loads crafty-preset-images-simple, crafty-runner-gulp and registers gulp tas
     {}
   );
 
-  const loadedPresets = [
-    require("@swissquote/crafty-preset-images-simple"),
-    require("@swissquote/crafty-runner-gulp"),
-    { presetName: "crafty.config.js" }
-  ];
-
-  expect(crafty.config.loadedPresets).toEqual(loadedPresets);
-
-  const commands = getCommands(crafty);
-  expect(Object.keys(commands)).toEqual(["help", "run", "watch", "test"]);
+  const loadedPresets = crafty.config.loadedPresets.map(
+    preset => preset.presetName
+  );
+  expect(loadedPresets).toContain("@swissquote/crafty-preset-images-simple");
+  expect(loadedPresets).toContain("@swissquote/crafty-runner-gulp");
 
   crafty.createTasks();
   expect(Object.keys(crafty.undertaker._registry.tasks())).toEqual([
@@ -79,23 +68,23 @@ it("Loads crafty-preset-images-simple, crafty-runner-gulp and registers gulp tas
   ]);
 });
 
-it("Copies and compresses images", () => {
-  process.chdir(
-    path.join(__dirname, "../fixtures/crafty-preset-images-simple")
-  );
-  rimraf.sync("dist");
+it("Copies and compresses images", async () => {
+  const cwd = path.join(__dirname, "../fixtures/crafty-preset-images-simple");
+  await rmfr(path.join(cwd, "dist"));
 
-  const result = testUtils.run(["run", "images"]);
+  const result = await testUtils.run(["run", "images"], cwd);
 
   expect(result).toMatchSnapshot();
 
-  expect(fs.existsSync("dist/images/batman.svg")).toBeTruthy();
-  expect(fs.existsSync("dist/images/somedir/cute-cats-2.jpg")).toBeTruthy();
+  expect(testUtils.exists(cwd, "dist/images/batman.svg")).toBeTruthy();
+  expect(
+    testUtils.exists(cwd, "dist/images/somedir/cute-cats-2.jpg")
+  ).toBeTruthy();
 
-  expect(fs.statSync("dist/images/batman.svg").size).toEqual(
-    fs.statSync("images/batman.svg").size
+  expect(fs.statSync(path.join(cwd, "dist/images/batman.svg")).size).toEqual(
+    fs.statSync(path.join(cwd, "images/batman.svg")).size
   );
-  expect(fs.statSync("dist/images/somedir/cute-cats-2.jpg").size).toEqual(
-    fs.statSync("images/somedir/cute-cats-2.jpg").size
-  );
+  expect(
+    fs.statSync(path.join(cwd, "dist/images/somedir/cute-cats-2.jpg")).size
+  ).toEqual(fs.statSync(path.join(cwd, "images/somedir/cute-cats-2.jpg")).size);
 });

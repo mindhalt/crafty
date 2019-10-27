@@ -1,0 +1,17 @@
+{
+  "name": "@swissquote/crafty-preset-css-modules",
+  "version": "1.4.0",
+  "repository": "https://github.com/swissquote/crafty.git",
+  "description": "CSS modules for crafty",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+    "@types/css-modules": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
